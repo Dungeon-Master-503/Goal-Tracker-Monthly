@@ -1,0 +1,3 @@
+Type: TXT
+Name: _vercel
+Value: vc-domain-verify=momentum.us.cc,89b74fce2014e3ec2a40
