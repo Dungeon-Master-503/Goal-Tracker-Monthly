@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donors</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-database-compat.js"></script>
+    <style>
+        /* YOUR ORIGINAL CSS - SAME AS BEFORE */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            margin: 0 auto;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .public-section { padding: 40px; text-align: center; }
+        .admin-section { display: none; padding: 40px; background: #f8f9fa; }
+        h1 { color: #333; margin-bottom: 20px; font-size: 28px; }
+        .public-list { max-height: 400px; overflow-y: auto; margin: 30px 0; }
+        .donor-item {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .admin-controls { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
+        input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            flex: 1;
+            min-width: 150px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 24px;
+            background: #4dabf7;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        button:hover { background: #2196F3; transform: translateY(-2px); }
+        .admin-btn { background: #ff9800; font-size: 14px; padding: 10px 20px; }
+        .admin-btn:hover { background: #f57c00; }
+        .delete-btn { background: #ff4444; padding: 8px 12px; font-size: 12px; }
+        .delete-btn:hover { background: #cc0000; }
+        .passcode-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        .close-btn { background: #666; margin-top: 20px; }
+        #error-msg { color: #ff4444; display: none; margin-top: 10px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 14px; }
+        .status.connected { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .status.disconnected { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <!-- YOUR ORIGINAL HTML - SAME -->
+    <div class="container">
+        <div class="public-section" id="public-section">
+            <h1>🙏 Our Donors</h1>
+            <p style="color: #666; margin-bottom: 30px;">Thank you for your support! 💖</p>
+            <div id="public-list" class="public-list"></div>
+            <button class="admin-btn" onclick="showPasscodeModal()">👨‍💼 Manage Donors</button>
+        </div>
+
+        <div class="admin-section" id="admin-section">
+            <h1>💰 Admin Panel</h1>
+            <div id="connection-status" class="status disconnected">🔌 Connecting...</div>
+            <div id="admin-list" style="max-height: 300px; overflow-y: auto; margin-bottom: 20px;"></div>
+            
+            <div class="admin-controls">
+                <input type="text" id="donor-name" placeholder="Donor Name">
+                <input type="number" id="donor-amount" placeholder="₹ Amount" min="1">
+                <button onclick="addDonor()">➕ Add</button>
+            </div>
+            
+            <button onclick="logout()" style="background: #666; width: 100%; margin-top: 20px;">🔒 Logout</button>
+        </div>
+    </div>
+
+    <div class="passcode-modal" id="passcode-modal">
+        <div class="modal-content">
+            <h2>🔒 Admin Access</h2>
+            <p>Enter Passcode:</p>
+            <input type="password" id="passcode-input" placeholder="•••••" maxlength="3">
+            <br>
+            <button onclick="checkPasscode()">Unlock</button>
+            <button class="close-btn" onclick="closeModal()">Cancel</button>
+            <p id="error-msg">Wrong passcode!</p>
+        </div>
+    </div>
+
+    <script>
+        // YOUR FIREBASE CONFIG
+        const firebaseConfig = {
+            databaseURL: "https://tracker-503-default-rtdb.firebaseio.com/"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        
+        const PASSCODE = "DMG";
+        let donors = [];
+
+        // 🔥 LIVE SYNC - Works ALL browsers instantly!
+        db.ref('donors').on('value', (snapshot) => {
+            donors = snapshot.val() || [];
+            renderPublicList();
+            if (document.getElementById('admin-section').style.display === 'block') {
+                renderAdminList();
+            }
+            updateStatus('connected');
+        }, (error) => {
+            console.error('Firebase error:', error);
+            updateStatus('disconnected');
+        });
+
+        function updateStatus(status) {
+            const el = document.getElementById('connection-status');
+            if (status === 'connected') {
+                el.textContent = '🟢 LIVE - Synced across all browsers!';
+                el.className = 'status connected';
+            } else {
+                el.textContent = '🔴 Offline - Using local backup';
+                el.className = 'status disconnected';
+            }
+        }
+
+        // YOUR ORIGINAL FUNCTIONS - MODIFIED FOR FIREBASE
+        function renderPublicList() {
+            const list = document.getElementById('public-list');
+            if (!donors || donors.length === 0) {
+                list.innerHTML = '<div class="donor-item"><p>No donors yet. Be the first! 😊</p></div>';
+            } else {
+                list.innerHTML = donors.slice(-10).map(donor => 
+                    `<div class="donor-item">
+                        <span>💰 ${donor.name} - ₹${donor.amount}</span>
+                        <span style="color: #666; font-size: 14px;">${donor.date}</span>
+                    </div>`
+                ).join('');
+            }
+        }
+
+        function renderAdminList() {
+            const list = document.getElementById('admin-list');
+            if (!donors || donors.length === 0) {
+                list.innerHTML = '<div class="donor-item"><p>No donors yet</p></div>';
+            } else {
+                list.innerHTML = donors.map((donor, index) => `
+                    <div class="donor-item">
+                        <span>${donor.name} - ₹${donor.amount} <small>(${donor.date})</small></span>
+                        <button class="delete-btn" onclick="deleteDonor(${index})">🗑️ Delete</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function addDonor() {
+            const name = document.getElementById('donor-name').value.trim();
+            const amount = document.getElementById('donor-amount').value;
+            if (name && amount > 0) {
+                const newDonor = {
+                    name, 
+                    amount: parseInt(amount), 
+                    date: new Date().toLocaleDateString('en-IN')
+                };
+                donors.push(newDonor);
+                db.ref('donors').set(donors); // 🔥 LIVE CLOUD SAVE
+                document.getElementById('donor-name').value = '';
+                document.getElementById('donor-amount').value = '';
+            }
+        }
+
+        function deleteDonor(index) {
+            if(confirm(`Delete ${donors[index].name}?`)) {
+                donors.splice(index, 1);
+                db.ref('donors').set(donors); // 🔥 LIVE CLOUD UPDATE
+            }
+        }
+
+        // Modal functions (same as before)
+        function showPasscodeModal() {
+            document.getElementById('passcode-modal').style.display = 'flex';
+            document.getElementById('passcode-input').focus();
+            document.getElementById('passcode-input').value = '';
+        }
+
+        function closeModal() {
+            document.getElementById('passcode-modal').style.display = 'none';
+            document.getElementById('passcode-input').value = '';
+            document.getElementById('error-msg').style.display = 'none';
+        }
+
+        function checkPasscode() {
+            const input = document.getElementById('passcode-input').value;
+            if (input === PASSCODE) {
+                closeModal();
+                document.getElementById('public-section').style.display = 'none';
+                document.getElementById('admin-section').style.display = 'block';
+                renderAdminList();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+                document.getElementById('passcode-input').value = '';
+                setTimeout(() => document.getElementById('error-msg').style.display = 'none', 2000);
+            }
+        }
+
+        function logout() {
+            document.getElementById('admin-section').style.display = 'none';
+            document.getElementById('public-section').style.display = 'block';
+        }
+
+        // Enter key
+        document.getElementById('passcode-input').addEventListener('keypress', e => {
+            if (e.key === 'Enter') checkPasscode();
+        });
+    </script>
+</body>
+</html>

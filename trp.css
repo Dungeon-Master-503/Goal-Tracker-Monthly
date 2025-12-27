@@ -1,0 +1,134 @@
+/* 🌈 Background */
+body {
+  background: linear-gradient(45deg, #e8e8ea, #d37bf6);
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* 📦 Main container */
+.trp1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.16);
+  margin: 20px auto;
+  max-width: 400px;
+  width: 90%;
+  padding: 0 20px;
+}
+
+
+
+/* 📦 Secondary box */
+#trp2 {
+  width: 800px;
+  height: 50px;
+  background: #bebebe;
+  box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.16);
+  border-radius: 20px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  color: #000;
+}
+
+#trp3 {
+    width: 250px;
+    height: 40px;
+    background: #8c8c8c;
+    box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.16);
+    border-radius: 15px;
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: #000;
+}
+
+
+/* Dark Mode */
+body.dark-mode {
+    background: linear-gradient(45deg, #1a1a2e, #16213e);
+    transition: background 0.4s ease;
+}
+
+body.dark-mode .trp1 {
+    background: #2d2d44;
+}
+
+body.dark-mode #trp2 {
+    background: #3a3a5c;
+    color: #fff;
+}
+
+body.dark-mode #trp3 {
+    background: #ff6b6b; /* Red for light mode button */
+    color: #fff;
+}
+
+/* Button hover effects */
+#trp3 {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#trp3:hover {
+    transform: translateY(-2px);
+}
+
+
+/* Table Styles */
+.habit-table {
+    width: 100%;
+    
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 6px 6px 6px rgba(0, 0, 0, 0.16);
+    overflow: hidden;
+}
+
+.habit-table th,
+.habit-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.habit-table th {
+    background: #2196F3;
+    color: white;
+    font-weight: bold;
+}
+
+.habit-table tr:hover {
+    background: #f5f5f5;
+}
+
+/* Dark mode table */
+body.dark-mode .habit-table {
+    background: #2d2d44;
+}
+
+body.dark-mode .habit-table th {
+    background: #4dabf7;
+}
+
+body.dark-mode .habit-table tr:hover {
+    background: #3a3a5c;
+}
+
+body.dark-mode .habit-table td {
+    border-bottom-color: #444;
+}
+
