@@ -411,4 +411,12 @@ body[data-theme="dark"] {
     top: 0;
     z-index: 10;
 }
+/*delete button*/
+
+#delete-habit-btn:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
 
