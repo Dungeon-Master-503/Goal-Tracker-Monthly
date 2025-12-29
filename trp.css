@@ -336,3 +336,46 @@ body[data-theme="dark"] {
 * {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* FIXED: Scrollable habit rows for 6+ goals */
+.habit-table tbody {
+    max-height: 400px; /* Shows 5-6 rows + scroll */
+    overflow-y: auto;
+    display: block;
+}
+
+.habit-table thead, 
+.habit-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.habit-table tbody::-webkit-scrollbar {
+    width: 6px;
+}
+
+.habit-table tbody::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.habit-table tbody::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
+    border-radius: 3px;
+}
+
+[data-theme="dark"] .habit-table tbody::-webkit-scrollbar-thumb {
+    background: #60a5fa;
+}
+
+/* Ensure first column stays readable */
+.habit-table td:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--surface);
+    z-index: 5;
+    border-right: 2px solid var(--border-color);
+}
+
+
