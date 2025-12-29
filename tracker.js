@@ -1,4 +1,4 @@
-// COMPLETE JS - WITH TODAY HIGHLIGHT FIXED
+// COMPLETE JS - TODAY HIGHLIGHT BULLETPROOF
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // ALL BUTTON EVENT LISTENERS
     document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
     document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
     document.getElementById('delete-habit-btn').addEventListener('click', deleteHabit);
@@ -38,28 +37,35 @@ function createMonthlyHabitTracker() {
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const todayDate = today.getDate(); // ✅ TODAY'S DATE
+    const todayDate = today.getDate();
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December'][currentMonth];
     
     thead.innerHTML = `<th>${monthName} ${currentYear}</th>`;
     tbody.innerHTML = '';
     
-    // Days headers WITH TODAY HIGHLIGHT ✅ FIXED
+    // ✅ BULLETPROOF TODAY HIGHLIGHT
     for (let i = 1; i <= daysInMonth; i++) {
         const th = document.createElement('th');
         const dateObj = new Date(currentYear, currentMonth, i);
         const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dateObj.getDay()];
         
         th.innerHTML = `${i}<br><small>${dayName}</small>`;
-        th.style.cssText = 'font-size:12px;text-align:center;padding:8px 4px;white-space:nowrap;';
         
-        // ✅ PERFECT TODAY HIGHLIGHT - Both class + inline
+        // FORCE TODAY HIGHLIGHT - !important styles
         if (i === todayDate) {
+            th.setAttribute('style', `
+                background: #FFD700 !important;
+                color: #000 !important;
+                font-weight: bold !important;
+                box-shadow: inset 0 2px 4px rgba(0,0,0,0.1) !important;
+                z-index: 20 !important;
+                position: sticky !important;
+                top: 0 !important;
+            `);
             th.classList.add('today');
-            th.style.background = '#FFD700';
-            th.style.color = '#000';
-            th.style.fontWeight = 'bold';
+        } else {
+            th.style.cssText = 'font-size:12px;text-align:center;padding:8px 4px;white-space:nowrap;';
         }
         
         thead.appendChild(th);
@@ -95,6 +101,7 @@ function createMonthlyHabitTracker() {
     });
 }
 
+// Keep all other functions exactly the same...
 function toggleEditMode() {
     editMode = !editMode;
     const editBtn = document.getElementById('edit-btn');
@@ -140,7 +147,6 @@ function addNewHabit() {
     }
 }
 
-// 🆕 DELETE FUNCTION
 function deleteHabit() {
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                       'July', 'August', 'September', 'October', 'November', 'December'][new Date().getMonth()];
@@ -153,18 +159,15 @@ function deleteHabit() {
         return;
     }
     
-    // Show goals list for user to choose
     const goalList = savedHabits.map((habit, index) => `${index + 1}. ${habit}`).join('\n');
     const choice = prompt(`Select goal to delete (enter number):\n\n${goalList}`);
     
     const index = parseInt(choice) - 1;
     if (index >= 0 && index < savedHabits.length) {
         if (confirm(`Delete "${savedHabits[index]}"?`)) {
-            // Remove habit from array
             savedHabits.splice(index, 1);
             localStorage.setItem(savedHabitsKey, JSON.stringify(savedHabits));
             
-            // Clean up all data for deleted habit
             const keys = Object.keys(localStorage);
             keys.forEach(key => {
                 if (key.includes(`${monthName}${currentYear}-${index}-day`)) {
@@ -172,7 +175,6 @@ function deleteHabit() {
                 }
             });
             
-            // Shift remaining habit data indices
             for (let i = index; i < savedHabits.length; i++) {
                 for (let day = 1; day <= 31; day++) {
                     const oldKey = `${monthName}${currentYear}-${i}-day${day}`;
