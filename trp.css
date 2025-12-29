@@ -1,4 +1,4 @@
-/* trp.css - Modern Habit Tracker Design */
+/* trp.css - COMPLETE HORIZONTAL SCROLL FIX */
 * {
     margin: 0;
     padding: 0;
@@ -153,6 +153,11 @@ body[data-theme="dark"] {
     color: white;
 }
 
+#delete-habit-btn {
+    background: linear-gradient(135deg, var(--accent-orange), #d97706) !important;
+    color: white;
+}
+
 .reset-btn {
     background: linear-gradient(135deg, var(--accent-red), #dc2626);
     color: white;
@@ -163,38 +168,25 @@ body[data-theme="dark"] {
     box-shadow: var(--shadow-lg);
 }
 
-/* Table Container */
+#delete-habit-btn:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+}
+
+/* PERFECT HORIZONTAL + VERTICAL SCROLL TABLE */
 .table-container {
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
     background: var(--surface);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    max-height: 80vh;
-    overflow-x: auto;
-    scrollbar-width: thin;
+    overflow: auto; /* BOTH directions */
+    max-height: 85vh;
+    min-width: 900px; /* Forces horizontal scroll */
 }
 
-.table-container::-webkit-scrollbar {
-    height: 8px;
-}
-
-.table-container::-webkit-scrollbar-track {
-    background: var(--border-color);
-    border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-    background: var(--accent-blue);
-    border-radius: 4px;
-}
-
-/* Habit Table */
 .habit-table {
     width: 100%;
+    min-width: 1200px; /* Ensures horizontal scroll */
     border-collapse: collapse;
     font-size: 0.95rem;
     background: transparent;
@@ -202,20 +194,34 @@ body[data-theme="dark"] {
 
 .habit-table th,
 .habit-table td {
-    padding: 1.25rem 1rem;
+    padding: 1rem 0.5rem;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
     vertical-align: middle;
+    white-space: nowrap;
 }
 
 .habit-table th:first-child,
 .habit-table td:first-child {
     text-align: left;
-    padding-left: 2rem;
-    min-width: 180px;
+    padding-left: 1.5rem;
+    width: 220px;
+    min-width: 220px;
+    position: sticky;
+    left: 0;
+    background: var(--surface);
+    z-index: 5;
+    border-right: 2px solid var(--border-color);
     font-weight: 500;
 }
 
+.habit-table th:not(:first-child),
+.habit-table td:not(:first-child) {
+    width: 55px;
+    min-width: 55px;
+}
+
+/* Header styles */
 .habit-table th {
     background: linear-gradient(135deg, var(--accent-blue), #2563eb);
     color: white;
@@ -235,16 +241,24 @@ body[data-theme="dark"] {
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.habit-table tr {
-    transition: background 0.2s ease;
+/* Scrollbars */
+.table-container::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
 }
 
-.habit-table tr:hover {
-    background: rgba(59, 130, 246, 0.05);
+.table-container::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 4px;
 }
 
-[data-theme="dark"] .habit-table tr:hover {
-    background: rgba(59, 130, 246, 0.15);
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
 }
 
 .habit-check {
@@ -276,6 +290,18 @@ body[data-theme="dark"] {
     background: rgba(59, 130, 246, 0.2);
 }
 
+.habit-table tr {
+    transition: background 0.2s ease;
+}
+
+.habit-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+[data-theme="dark"] .habit-table tr:hover {
+    background: rgba(59, 130, 246, 0.15);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     body {
@@ -300,27 +326,22 @@ body[data-theme="dark"] {
         justify-content: center;
     }
     
-    .habit-table th:first-child,
-    .habit-table td:first-child {
-        padding-left: 1rem;
-        min-width: 140px;
+    .table-container {
+        min-width: 100vw;
+        border-radius: 16px;
+        margin: 0 -1rem;
     }
     
     .habit-table th,
     .habit-table td {
-        padding: 1rem 0.75rem;
-        font-size: 0.9rem;
+        padding: 0.75rem 0.25rem;
+        font-size: 0.85rem;
     }
 }
 
 @media (max-width: 480px) {
     .theme-control {
         padding: 0.5rem 1rem;
-    }
-    
-    .table-container {
-        margin: 0 -0.5rem;
-        border-radius: 16px;
     }
 }
 
@@ -336,87 +357,3 @@ body[data-theme="dark"] {
 * {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* PERFECT 20-GOAL TABLE - NO BREAKAGE */
-/* PERFECT 20-GOAL TABLE - NO BREAKAGE */
-.table-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    background: var(--surface);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border-color);
-    max-height: 85vh; /* Tall enough for 20 goals */
-}
-
-.habit-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-}
-
-.habit-table th,
-.habit-table td {
-    padding: 1rem 0.75rem;
-    text-align: center;
-    border-bottom: 1px solid var(--border-color);
-    vertical-align: middle;
-}
-
-.habit-table th:first-child,
-.habit-table td:first-child {
-    text-align: left;
-    padding-left: 1.5rem;
-    min-width: 180px;
-    width: 180px; /* FIXED width */
-    position: sticky;
-    left: 0;
-    background: var(--surface);
-    z-index: 5;
-    border-right: 2px solid var(--border-color);
-}
-
-/* Day columns - equal width */
-.habit-table th:not(:first-child),
-.habit-table td:not(:first-child) {
-    min-width: 50px;
-    width: calc((100% - 180px) / 31);
-}
-
-/* PERFECT SCROLL - Only container scrolls */
-.table-container {
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-}
-
-.table-container::-webkit-scrollbar {
-    width: 8px;
-}
-
-.table-container::-webkit-scrollbar-track {
-    background: var(--border-color);
-    border-radius: 4px;
-}
-
-.table-container::-webkit-scrollbar-thumb {
-    background: var(--accent-blue);
-    border-radius: 4px;
-}
-
-/* Header sticky */
-.habit-table thead th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-/*delete button*/
-
-#delete-habit-btn:hover {
-    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-}
-
-
