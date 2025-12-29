@@ -1,11 +1,10 @@
-// COMPLETE JS - 20 GOALS MAX + TALL SCROLL
+// SIMPLIFIED JS - WORKS PERFECTLY
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
 document.addEventListener('DOMContentLoaded', function() {
     createMonthlyHabitTracker();
     
-    // Theme toggle
     const themeBtn = document.getElementById('trp3');
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
@@ -22,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // ✅ BUTTON EVENT LISTENERS
     document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
     document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
     document.getElementById('reset-btn').addEventListener('click', resetMonthlyData);
@@ -37,7 +35,6 @@ function createMonthlyHabitTracker() {
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December'][currentMonth];
     
@@ -51,22 +48,17 @@ function createMonthlyHabitTracker() {
         const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dateObj.getDay()];
         
         th.innerHTML = `${i}<br><small>${dayName}</small>`;
-        th.style.cssText = 'font-size:12px;text-align:center;padding:8px 4px;white-space:nowrap;';
-        
         if (i === today.getDate()) {
             th.style.background = '#FFD700';
             th.style.color = '#000';
             th.style.fontWeight = 'bold';
         }
-        
         thead.appendChild(th);
     }
     
-    // ✅ 20 GOAL LIMIT - Load ALL saved habits up to 20
+    // 20 GOAL LIMIT
     const savedHabitsKey = `${monthName}${currentYear}-habits`;
     let habitsArray = JSON.parse(localStorage.getItem(savedHabitsKey)) || defaultHabits;
-    
-    // FIXED: Limit to exactly 20 goals max
     habitsArray.slice(0, 20).forEach((habit, habitIndex) => {
         const row = document.createElement('tr');
         const habitCell = document.createElement('td');
@@ -94,6 +86,7 @@ function createMonthlyHabitTracker() {
     });
 }
 
+// Keep all other functions same (toggleEditMode, saveHabits, addNewHabit, resetMonthlyData)
 function toggleEditMode() {
     editMode = !editMode;
     const editBtn = document.getElementById('edit-btn');
@@ -126,9 +119,8 @@ function addNewHabit() {
     const savedHabitsKey = `${monthName}${currentYear}-habits`;
     let savedHabits = JSON.parse(localStorage.getItem(savedHabitsKey)) || [];
     
-    // ✅ 20 GOAL LIMIT CHECK
     if (savedHabits.length >= 20) {
-        alert('⚠️ Maximum 20 goals reached! Delete or edit existing goals first.');
+        alert('⚠️ Maximum 20 goals reached!');
         return;
     }
     
