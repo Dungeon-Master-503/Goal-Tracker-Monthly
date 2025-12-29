@@ -1,10 +1,11 @@
-// SIMPLIFIED JS - WORKS PERFECTLY
+// COMPLETE JS - WITH DELETE GOAL BUTTON
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
 document.addEventListener('DOMContentLoaded', function() {
     createMonthlyHabitTracker();
     
+    // Theme toggle
     const themeBtn = document.getElementById('trp3');
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
@@ -21,8 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // ALL BUTTON EVENT LISTENERS
     document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
     document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
+    document.getElementById('delete-habit-btn').addEventListener('click', deleteHabit);
     document.getElementById('reset-btn').addEventListener('click', resetMonthlyData);
 });
 
@@ -86,7 +89,6 @@ function createMonthlyHabitTracker() {
     });
 }
 
-// Keep all other functions same (toggleEditMode, saveHabits, addNewHabit, resetMonthlyData)
 function toggleEditMode() {
     editMode = !editMode;
     const editBtn = document.getElementById('edit-btn');
@@ -129,6 +131,59 @@ function addNewHabit() {
         savedHabits.push(newHabitName.trim());
         localStorage.setItem(savedHabitsKey, JSON.stringify(savedHabits));
         createMonthlyHabitTracker();
+    }
+}
+
+// 🆕 NEW DELETE FUNCTION
+function deleteHabit() {
+    const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
+                      'July', 'August', 'September', 'October', 'November', 'December'][new Date().getMonth()];
+    const currentYear = new Date().getFullYear();
+    const savedHabitsKey = `${monthName}${currentYear}-habits`;
+    let savedHabits = JSON.parse(localStorage.getItem(savedHabitsKey)) || [];
+    
+    if (savedHabits.length === 0) {
+        alert('❌ No goals to delete!');
+        return;
+    }
+    
+    // Show goals list for user to choose
+    const goalList = savedHabits.map((habit, index) => `${index + 1}. ${habit}`).join('\n');
+    const choice = prompt(`Select goal to delete (enter number):\n\n${goalList}`);
+    
+    const index = parseInt(choice) - 1;
+    if (index >= 0 && index < savedHabits.length) {
+        if (confirm(`Delete "${savedHabits[index]}"?`)) {
+            // Remove habit from array
+            savedHabits.splice(index, 1);
+            localStorage.setItem(savedHabitsKey, JSON.stringify(savedHabits));
+            
+            // Clean up all data for deleted habit
+            const keys = Object.keys(localStorage);
+            keys.forEach(key => {
+                if (key.includes(`${monthName}${currentYear}-${index}-day`)) {
+                    localStorage.removeItem(key);
+                }
+            });
+            
+            // Shift remaining habit data indices
+            for (let i = index; i < savedHabits.length; i++) {
+                for (let day = 1; day <= 31; day++) {
+                    const oldKey = `${monthName}${currentYear}-${i}-day${day}`;
+                    const newKey = `${monthName}${currentYear}-${(i+1)}-day${day}`;
+                    const value = localStorage.getItem(oldKey);
+                    if (value) {
+                        localStorage.setItem(newKey, value);
+                        localStorage.removeItem(oldKey);
+                    }
+                }
+            }
+            
+            createMonthlyHabitTracker();
+            alert('✅ Goal deleted successfully!');
+        }
+    } else {
+        alert('❌ Invalid selection!');
     }
 }
 
