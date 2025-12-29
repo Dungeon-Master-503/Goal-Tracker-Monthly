@@ -1,4 +1,4 @@
-// COMPLETE JS - FIXED FOR UNLIMITED GOALS (6+ SCROLLS)
+// COMPLETE JS - 20 GOALS MAX + TALL SCROLL
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
@@ -41,7 +41,6 @@ function createMonthlyHabitTracker() {
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December'][currentMonth];
     
-    // FIXED: Clear properly
     thead.innerHTML = `<th>${monthName} ${currentYear}</th>`;
     tbody.innerHTML = '';
     
@@ -63,12 +62,12 @@ function createMonthlyHabitTracker() {
         thead.appendChild(th);
     }
     
-    // FIXED: Load ALL saved habits (NO 5-GOAL LIMIT)
+    // ✅ 20 GOAL LIMIT - Load ALL saved habits up to 20
     const savedHabitsKey = `${monthName}${currentYear}-habits`;
     let habitsArray = JSON.parse(localStorage.getItem(savedHabitsKey)) || defaultHabits;
     
-    // Show up to 15 habits max (scrolls after 6+)
-    habitsArray.slice(0, 15).forEach((habit, habitIndex) => {
+    // FIXED: Limit to exactly 20 goals max
+    habitsArray.slice(0, 20).forEach((habit, habitIndex) => {
         const row = document.createElement('tr');
         const habitCell = document.createElement('td');
         habitCell.textContent = habit;
@@ -121,13 +120,20 @@ function saveHabits() {
 }
 
 function addNewHabit() {
+    const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
+                      'July', 'August', 'September', 'October', 'November', 'December'][new Date().getMonth()];
+    const currentYear = new Date().getFullYear();
+    const savedHabitsKey = `${monthName}${currentYear}-habits`;
+    let savedHabits = JSON.parse(localStorage.getItem(savedHabitsKey)) || [];
+    
+    // ✅ 20 GOAL LIMIT CHECK
+    if (savedHabits.length >= 20) {
+        alert('⚠️ Maximum 20 goals reached! Delete or edit existing goals first.');
+        return;
+    }
+    
     const newHabitName = prompt('Enter new habit name:');
     if (newHabitName && newHabitName.trim()) {
-        const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
-                          'July', 'August', 'September', 'October', 'November', 'December'][new Date().getMonth()];
-        const currentYear = new Date().getFullYear();
-        const savedHabitsKey = `${monthName}${currentYear}-habits`;
-        let savedHabits = JSON.parse(localStorage.getItem(savedHabitsKey)) || [];
         savedHabits.push(newHabitName.trim());
         localStorage.setItem(savedHabitsKey, JSON.stringify(savedHabits));
         createMonthlyHabitTracker();
