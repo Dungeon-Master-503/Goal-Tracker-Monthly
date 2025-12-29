@@ -3,33 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Momentum - Habit Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="trp.css">
 </head>
 <body>
-
-<div class="trp1">
-    <button id="trp3">🌙 Night Mode</button>
-</div>
-
-<div id="trp2">Track your Habits</div>
-
-
-<div id="trp4">
-    <!-- ADD THESE 3 BUTTONS -->
-    <div style="text-align: center; margin: 20px 0;">
-        <button id="edit-btn" style="margin: 0 5px; padding: 10px 15px; border: none; border-radius: 20px; background: #2196F3; color: white; cursor: pointer; font-size: 14px;">✏️ Edit Goals</button>
-        <button id="add-habit-btn" style="margin: 0 5px; padding: 10px 15px; border: none; border-radius: 20px; background: #4CAF50; color: white; cursor: pointer; font-size: 14px;">➕ Add Habit</button>
-        <button id="reset-btn" style="margin: 0 5px; padding: 10px 15px; border: none; border-radius: 20px; background: #ff4444; color: white; cursor: pointer; font-size: 14px;">🔄 Reset</button>
+    <!-- Theme Toggle -->
+    <div class="theme-control">
+        <button id="trp3" class="theme-toggle" aria-label="Toggle dark mode">🌙 Night Mode</button>
     </div>
 
-    <table class="habit-table">
-        <thead><tr></tr></thead>
-        <tbody></tbody>
-    </table>
-</div>
+    <!-- Header -->
+    <header class="tracker-header">
+        <h1 id="trp2" class="page-title">Track your Habits</h1>
+    </header>
 
+    <!-- Action Buttons -->
+    <div class="action-bar">
+        <div class="button-group">
+            <button id="edit-btn" class="action-btn edit-btn" aria-label="Edit habit goals">
+                ✏️ Edit Goals
+            </button>
+            <button id="add-habit-btn" class="action-btn add-btn" aria-label="Add new habit">
+                ➕ Add Habit
+            </button>
+            <button id="reset-btn" class="action-btn reset-btn" aria-label="Reset monthly data">
+                🔄 Reset
+            </button>
+        </div>
+    </div>
 
-<script src="tracker.js"></script>
+    <!-- Habit Tracker Table -->
+    <div class="table-container">
+        <table class="habit-table">
+            <thead>
+                <tr></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script src="tracker.js"></script>
 </body>
 </html>
