@@ -3,16 +3,7 @@ let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
 document.addEventListener('DOMContentLoaded', function() {
-    createMonthlyHabitTracker();
-    
-    const themeBtn = document.getElementById('trp3');
-    if (localStorage.getItem('darkMode') === 'enabled') {
-        document.body.classList.add('dark-mode');
-        themeBtn.textContent = '☀️ Light Mode';
-    }
-    themeBtn.addEventListener('click', function() {
-        document.body.classList.toggle('dark-mode');
-        if (document.body.classList.contains('dark-mode')) {
+    createMonthlyHabitTracker();a
             localStorage.setItem('darkMode', 'enabled');
             themeBtn.textContent = '☀️ Light Mode';
         } else {
@@ -121,3 +112,4 @@ function saveHabits() {
     const newHabits = Array.from(habitCells).map(cell => cell.textContent.trim()).filter(habit => habit);
     
     const monthName = ['January', '
+
