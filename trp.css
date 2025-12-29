@@ -1,4 +1,4 @@
-/* trp.css - COMPLETE WITH HORIZONTAL SCROLL FIX */
+/* trp.css - COMPLETE WITH TODAY HIGHLIGHT FIX */
 * {
     margin: 0;
     padding: 0;
@@ -172,23 +172,24 @@ body[data-theme="dark"] {
     background: linear-gradient(135deg, #f59e0b, #d97706) !important;
 }
 
-/* PERFECT HORIZONTAL + VERTICAL SCROLL - NEW TABLE CONTAINER */
+/* PERFECT HORIZONTAL + VERTICAL SCROLL TABLE */
 .table-container {
     max-width: 100%;
     margin: 0 auto;
     background: var(--surface);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    overflow: auto; /* BOTH directions */
+    overflow: auto;
     max-height: 85vh;
-    min-width: 900px; /* Ensures horizontal scroll */
+    min-width: 900px;
 }
 
 .habit-table {
     width: 100%;
-    min-width: 1200px; /* Forces horizontal scroll */
+    min-width: 1200px;
     border-collapse: collapse;
     font-size: 0.95rem;
+    background: transparent;
 }
 
 .habit-table th,
@@ -211,30 +212,40 @@ body[data-theme="dark"] {
     background: var(--surface);
     z-index: 5;
     border-right: 2px solid var(--border-color);
+    font-weight: 500;
 }
 
-/* Day columns - fixed width */
 .habit-table th:not(:first-child),
 .habit-table td:not(:first-child) {
     width: 55px;
     min-width: 55px;
 }
 
-/* Sticky header */
-.habit-table thead th {
+/* ⚠️ BULLETPROOF TODAY HIGHLIGHT - HIGHEST PRIORITY */
+#today-column,
+.habit-table th.today,
+.habit-table th.today * {
+    background: #FFD700 !important;
+    color: #000 !important;
+    font-weight: 700 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
+    z-index: 100 !important;
+}
+
+/* Header styles - SECONDARY (today overrides this) */
+.habit-table th {
+    background: linear-gradient(135deg, var(--accent-blue), #2563eb) !important;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     position: sticky;
     top: 0;
     z-index: 10;
-    background: linear-gradient(135deg, var(--accent-blue), #2563eb) !important;
 }
 
-.habit-table th.today {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
-    color: #000;
-    font-weight: 700;
-}
-
-/* PERFECT SCROLLBARS */
+/* Scrollbars */
 .table-container::-webkit-scrollbar {
     height: 8px;
     width: 8px;
@@ -267,10 +278,42 @@ body[data-theme="dark"] {
     transform: scale(1.3);
 }
 
-/* Mobile: Touch scroll */
+.habit-check:checked {
+    background-color: var(--accent-green) !important;
+    border-color: var(--accent-green) !important;
+}
+
+/* Content editable */
+.habit-table td[contenteditable="true"] {
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 8px;
+    cursor: text;
+}
+
+[data-theme="dark"] .habit-table td[contenteditable="true"] {
+    background: rgba(59, 130, 246, 0.2);
+}
+
+.habit-table tr {
+    transition: background 0.2s ease;
+}
+
+.habit-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+[data-theme="dark"] .habit-table tr:hover {
+    background: rgba(59, 130, 246, 0.15);
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
     body {
         padding: 1rem 0.5rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
     }
     
     .action-bar {
@@ -306,6 +349,7 @@ body[data-theme="dark"] {
     }
 }
 
+/* Focus accessibility */
 .action-btn:focus,
 .theme-toggle:focus,
 .habit-check:focus {
@@ -313,30 +357,7 @@ body[data-theme="dark"] {
     outline-offset: 2px;
 }
 
+/* Smooth animations */
 * {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* FORCE TODAY HIGHLIGHT - OVERRIDES ALL */
-
-
-/* FORCE TODAY HIGHLIGHT - OVERRIDES ALL */
-.habit-table th.today {
-    background: #FFD700 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
-    z-index: 100 !important;
-}
-
-/* Ensure sticky headers have proper background */
-.habit-table thead th {
-    background: linear-gradient(135deg, var(--accent-blue), #2563eb) !important;
-    z-index: 10 !important;
-}
-
-.habit-table th.today {
-    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
-}
-
-
