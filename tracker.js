@@ -282,8 +282,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-
-
-
-
-
+    // ✅ BUTTON EVENT LISTENERS - NOW WORKING!
+    document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
+    document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
+    document.getElementById('reset-btn').addEventListener('click', resetMonthlyData);
+});
