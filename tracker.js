@@ -1,10 +1,11 @@
-// SIMPLIFIED JS - WORKS PERFECTLY
+// COMPLETE JS - TODAY HIGHLIGHT 100% FIXED
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
 document.addEventListener('DOMContentLoaded', function() {
     createMonthlyHabitTracker();
     
+    // Theme toggle
     const themeBtn = document.getElementById('trp3');
     if (localStorage.getItem('darkMode') === 'enabled') {
         document.body.classList.add('dark-mode');
@@ -21,8 +22,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // ALL BUTTON EVENT LISTENERS
     document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
     document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
+    document.getElementById('delete-habit-btn').addEventListener('click', deleteHabit);
     document.getElementById('reset-btn').addEventListener('click', resetMonthlyData);
 });
 
@@ -35,24 +38,30 @@ function createMonthlyHabitTracker() {
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const todayDate = today.getDate(); // ✅ TODAY'S DATE
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December'][currentMonth];
     
     thead.innerHTML = `<th>${monthName} ${currentYear}</th>`;
     tbody.innerHTML = '';
     
-    // Days headers
+    // ✅ BULLETPROOF DAYS WITH TODAY HIGHLIGHT
     for (let i = 1; i <= daysInMonth; i++) {
         const th = document.createElement('th');
         const dateObj = new Date(currentYear, currentMonth, i);
         const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dateObj.getDay()];
         
         th.innerHTML = `${i}<br><small>${dayName}</small>`;
-        if (i === today.getDate()) {
-            th.style.background = '#FFD700';
-            th.style.color = '#000';
-            th.style.fontWeight = 'bold';
+        th.className = 'day-header';
+        th.style.cssText = 'font-size:12px;text-align:center;padding:8px 4px;white-space:nowrap;';
+        
+        // ✅ TRIPLE TODAY HIGHLIGHT SYSTEM
+        if (i === todayDate) {
+            th.id = 'today-column';           // ID selector (highest priority)
+            th.classList.add('today');         // Class selector  
+            th.dataset.today = 'true';         // Data attribute
         }
+        
         thead.appendChild(th);
     }
     
@@ -84,9 +93,23 @@ function createMonthlyHabitTracker() {
         }
         tbody.appendChild(row);
     });
+    
+    // ✅ FINAL ENFORCEMENT - Runs after CSS loads
+    setTimeout(() => forceTodayHighlight(todayDate), 50);
 }
 
-// Keep all other functions same (toggleEditMode, saveHabits, addNewHabit, resetMonthlyData)
+function forceTodayHighlight(todayDate) {
+    const todayCol = document.getElementById('today-column');
+    if (todayCol) {
+        // TRIPLE OVERRIDE SYSTEM
+        todayCol.style.setProperty('background', '#FFD700', 'important');
+        todayCol.style.setProperty('color', '#000', 'important');
+        todayCol.style.setProperty('font-weight', 'bold', 'important');
+        todayCol.style.setProperty('box-shadow', 'inset 0 2px 4px rgba(0,0,0,0.2)', 'important');
+        todayCol.style.setProperty('z-index', '100', 'important');
+    }
+}
+
 function toggleEditMode() {
     editMode = !editMode;
     const editBtn = document.getElementById('edit-btn');
@@ -129,6 +152,54 @@ function addNewHabit() {
         savedHabits.push(newHabitName.trim());
         localStorage.setItem(savedHabitsKey, JSON.stringify(savedHabits));
         createMonthlyHabitTracker();
+    }
+}
+
+function deleteHabit() {
+    const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
+                      'July', 'August', 'September', 'October', 'November', 'December'][new Date().getMonth()];
+    const currentYear = new Date().getFullYear();
+    const savedHabitsKey = `${monthName}${currentYear}-habits`;
+    let savedHabits = JSON.parse(localStorage.getItem(savedHabitsKey)) || [];
+    
+    if (savedHabits.length === 0) {
+        alert('❌ No goals to delete!');
+        return;
+    }
+    
+    const goalList = savedHabits.map((habit, index) => `${index + 1}. ${habit}`).join('\n');
+    const choice = prompt(`Select goal to delete (enter number):\n\n${goalList}`);
+    
+    const index = parseInt(choice) - 1;
+    if (index >= 0 && index < savedHabits.length) {
+        if (confirm(`Delete "${savedHabits[index]}"?`)) {
+            savedHabits.splice(index, 1);
+            localStorage.setItem(savedHabitsKey, JSON.stringify(savedHabits));
+            
+            const keys = Object.keys(localStorage);
+            keys.forEach(key => {
+                if (key.includes(`${monthName}${currentYear}-${index}-day`)) {
+                    localStorage.removeItem(key);
+                }
+            });
+            
+            for (let i = index; i < savedHabits.length; i++) {
+                for (let day = 1; day <= 31; day++) {
+                    const oldKey = `${monthName}${currentYear}-${i}-day${day}`;
+                    const newKey = `${monthName}${currentYear}-${(i+1)}-day${day}`;
+                    const value = localStorage.getItem(oldKey);
+                    if (value) {
+                        localStorage.setItem(newKey, value);
+                        localStorage.removeItem(oldKey);
+                    }
+                }
+            }
+            
+            createMonthlyHabitTracker();
+            alert('✅ Goal deleted successfully!');
+        }
+    } else {
+        alert('❌ Invalid selection!');
     }
 }
 
