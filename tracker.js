@@ -94,7 +94,6 @@ function createMonthlyHabitTracker() {
     });
 }
 
-
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
     createMonthlyHabitTracker();
@@ -288,4 +287,3 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
     document.getElementById('reset-btn').addEventListener('click', resetMonthlyData);
 });
-
