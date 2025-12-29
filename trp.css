@@ -318,6 +318,9 @@ body[data-theme="dark"] {
 }
 
 /* FORCE TODAY HIGHLIGHT - OVERRIDES ALL */
+
+
+/* FORCE TODAY HIGHLIGHT - OVERRIDES ALL */
 .habit-table th.today {
     background: #FFD700 !important;
     color: #000 !important;
@@ -335,4 +338,5 @@ body[data-theme="dark"] {
 .habit-table th.today {
     background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
 }
+
 
