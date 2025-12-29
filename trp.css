@@ -407,3 +407,18 @@ body[data-theme="dark"] {
     background: var(--accent-blue);
     border-radius: 3px;
 }
+
+/* 20 GOALS - TALL SCROLLABLE TABLE */
+.habit-table tbody {
+    max-height: 700px; /* Shows ~12 rows + scroll for 20 */
+    overflow-y: auto;
+    display: block;
+}
+
+.habit-table thead, 
+.habit-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
