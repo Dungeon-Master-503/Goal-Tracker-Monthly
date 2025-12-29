@@ -337,18 +337,61 @@ body[data-theme="dark"] {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* FIXED: Scrollable habit rows for 6+ goals */
+/* FIXED: Scrollable table WITHOUT name truncation */
+.habit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: transparent;
+    table-layout: fixed; /* FIXED: Prevents column squeezing */
+}
+
+.habit-table th,
+.habit-table td {
+    padding: 1.25rem 0.5rem; /* Reduced horizontal padding */
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.habit-table th:first-child,
+.habit-table td:first-child {
+    text-align: left;
+    padding-left: 1.5rem; /* FIXED: More space for names */
+    min-width: 200px; /* FIXED: Wider first column */
+    max-width: 200px;
+    position: sticky;
+    left: 0;
+    background: var(--surface);
+    z-index: 5;
+    border-right: 2px solid var(--border-color);
+    white-space: normal; /* FIXED: Wrap long names */
+    word-break: break-word;
+    overflow: visible; /* FIXED: Show full names */
+}
+
+/* Scrollable tbody ONLY */
 .habit-table tbody {
-    max-height: 400px; /* Shows 5-6 rows + scroll */
+    max-height: 400px;
     overflow-y: auto;
     display: block;
 }
 
-.habit-table thead, 
+.habit-table thead,
 .habit-table tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
+}
+
+/* Day columns (narrower for checkboxes) */
+.habit-table th:not(:first-child),
+.habit-table td:not(:first-child) {
+    width: calc((100% - 200px) / 31); /* Dynamic day width */
+    min-width: 45px; /* FIXED: Checkbox space */
 }
 
 .habit-table tbody::-webkit-scrollbar {
@@ -364,18 +407,3 @@ body[data-theme="dark"] {
     background: var(--accent-blue);
     border-radius: 3px;
 }
-
-[data-theme="dark"] .habit-table tbody::-webkit-scrollbar-thumb {
-    background: #60a5fa;
-}
-
-/* Ensure first column stays readable */
-.habit-table td:first-child {
-    position: sticky;
-    left: 0;
-    background: var(--surface);
-    z-index: 5;
-    border-right: 2px solid var(--border-color);
-}
-
-
