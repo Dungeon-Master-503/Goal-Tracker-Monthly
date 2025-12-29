@@ -286,4 +286,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
     document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
     document.getElementById('reset-btn').addEventListener('click', resetMonthlyData);
-});
+});function scrollToToday() {
+  const today = new Date().getDate(); // Gets 29 today
+  const todayCell = document.querySelector(`[data-date="${today}"]`);
+  if (todayCell) {
+    todayCell.scrollIntoView({ 
+      behavior: 'smooth', 
+      inline: 'start'  // Aligns to left edge (no horizontal scroll needed)
+    });
+  }
+}
+scrollToToday(); // Call on load
+
+
+
+
