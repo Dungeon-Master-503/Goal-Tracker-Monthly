@@ -1,4 +1,4 @@
-/* trp.css - COMPLETE FIXED VERSION */
+/* trp.css - Modern Habit Tracker Design */
 * {
     margin: 0;
     padding: 0;
@@ -153,11 +153,6 @@ body[data-theme="dark"] {
     color: white;
 }
 
-#delete-habit-btn {
-    background: linear-gradient(135deg, var(--accent-orange), #d97706);
-    color: white;
-}
-
 .reset-btn {
     background: linear-gradient(135deg, var(--accent-red), #dc2626);
     color: white;
@@ -168,88 +163,23 @@ body[data-theme="dark"] {
     box-shadow: var(--shadow-lg);
 }
 
-#delete-habit-btn:hover {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-}
-
-/* FIXED TABLE CONTAINER - TABLE VISIBLE */
+/* Table Container */
 .table-container {
     max-width: 1200px;
     margin: 0 auto;
     background: var(--surface);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
-    overflow: auto;
-    max-height: 80vh;
+    overflow: hidden;
+    backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
-    display: block !important;
+    max-height: 80vh;
+    overflow-x: auto;
+    scrollbar-width: thin;
 }
 
-/* FIXED HABIT TABLE - VISIBLE + SCROLLABLE */
-.habit-table {
-    width: 100%;
-    min-width: 1000px;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    table-layout: auto;
-}
-
-.habit-table th,
-.habit-table td {
-    padding: 1rem 0.75rem;
-    text-align: center;
-    border-bottom: 1px solid var(--border-color);
-    vertical-align: middle;
-    white-space: nowrap;
-}
-
-.habit-table th:first-child,
-.habit-table td:first-child {
-    text-align: left;
-    padding-left: 1.5rem;
-    min-width: 200px;
-    width: 200px;
-    position: sticky;
-    left: 0;
-    z-index: 5;
-    background: var(--surface) !important;
-    border-right: 2px solid var(--border-color);
-}
-
-/* BULLETPROOF TODAY HIGHLIGHT - TOP PRIORITY */
-#today-column,
-.habit-table th.today,
-.habit-table th.today * {
-    background: #FFD700 !important;
-    color: #000 !important;
-    font-weight: 700 !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
-    z-index: 100 !important;
-}
-
-/* Header styles */
-.habit-table th {
-    background: linear-gradient(135deg, var(--accent-blue), #2563eb);
-    color: white;
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.habit-table thead th {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-/* Scrollbars */
 .table-container::-webkit-scrollbar {
     height: 8px;
-    width: 8px;
 }
 
 .table-container::-webkit-scrollbar-track {
@@ -262,8 +192,59 @@ body[data-theme="dark"] {
     border-radius: 4px;
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
-    background: #2563eb;
+/* Habit Table */
+.habit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: transparent;
+}
+
+.habit-table th,
+.habit-table td {
+    padding: 1.25rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.habit-table th:first-child,
+.habit-table td:first-child {
+    text-align: left;
+    padding-left: 2rem;
+    min-width: 180px;
+    font-weight: 500;
+}
+
+.habit-table th {
+    background: linear-gradient(135deg, var(--accent-blue), #2563eb);
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.habit-table th.today {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    color: #000;
+    font-weight: 700;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.habit-table tr {
+    transition: background 0.2s ease;
+}
+
+.habit-table tr:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+[data-theme="dark"] .habit-table tr:hover {
+    background: rgba(59, 130, 246, 0.15);
 }
 
 .habit-check {
@@ -295,18 +276,6 @@ body[data-theme="dark"] {
     background: rgba(59, 130, 246, 0.2);
 }
 
-.habit-table tr {
-    transition: background 0.2s ease;
-}
-
-.habit-table tr:hover {
-    background: rgba(59, 130, 246, 0.05);
-}
-
-[data-theme="dark"] .habit-table tr:hover {
-    background: rgba(59, 130, 246, 0.15);
-}
-
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     body {
@@ -331,20 +300,27 @@ body[data-theme="dark"] {
         justify-content: center;
     }
     
-    .table-container {
-        margin: 0 -0.5rem;
-        border-radius: 16px;
-        min-width: calc(100vw - 1rem);
+    .habit-table th:first-child,
+    .habit-table td:first-child {
+        padding-left: 1rem;
+        min-width: 140px;
     }
     
-    .habit-table {
-        min-width: 800px;
+    .habit-table th,
+    .habit-table td {
+        padding: 1rem 0.75rem;
+        font-size: 0.9rem;
     }
 }
 
 @media (max-width: 480px) {
     .theme-control {
         padding: 0.5rem 1rem;
+    }
+    
+    .table-container {
+        margin: 0 -0.5rem;
+        border-radius: 16px;
     }
 }
 
@@ -360,3 +336,88 @@ body[data-theme="dark"] {
 * {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+/* PERFECT 20-GOAL TABLE - NO BREAKAGE */
+/* PERFECT 20-GOAL TABLE - NO BREAKAGE */
+.table-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    max-height: 85vh; /* Tall enough for 20 goals */
+}
+
+.habit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+.habit-table th,
+.habit-table td {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.habit-table th:first-child,
+.habit-table td:first-child {
+    text-align: left;
+    padding-left: 1.5rem;
+    min-width: 180px;
+    width: 180px; /* FIXED width */
+    position: sticky;
+    left: 0;
+    background: var(--surface);
+    z-index: 5;
+    border-right: 2px solid var(--border-color);
+}
+
+/* Day columns - equal width */
+.habit-table th:not(:first-child),
+.habit-table td:not(:first-child) {
+    min-width: 50px;
+    width: calc((100% - 180px) / 31);
+}
+
+/* PERFECT SCROLL - Only container scrolls */
+.table-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+}
+
+.table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
+    border-radius: 4px;
+}
+
+/* Header sticky */
+.habit-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+/*delete button*/
+
+#delete-habit-btn:hover {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+
+
