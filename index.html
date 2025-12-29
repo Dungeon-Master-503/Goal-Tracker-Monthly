@@ -3,43 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta name="description" content="Track your monthly goals and stay productive with Momentum. A simple goal tracker app with habit streaks, SMART goal framework, and progress calendars.">
-      <meta name="keywords" content="momentum, goal tracker, monthly goals, goal manager, productivity app, habit tracker, SMART goals, progress tracker, task management, goal planning, objective tracking, productivity tools">
-    <title>Momentum - Goal Tracker Monthly</title>
-      <!-- Open Graph Meta Tags for Social Sharing -->
-      <meta property="og:title" content="Momentum - Goal Tracker Monthly">
-      <meta property="og:description" content="Track your monthly goals and achieve your objectives with Momentum. Features habit streaks, SMART goal framework, progress calendars, and custom categories.">
-      <meta property="og:image" content="https://momentum.us.cc/og11.png">
-      <meta property="og:url" content="https://momentum.us.cc">
-      <meta property="og:type" content="website">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
+    <title>Momentum - Habit Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="tracker.css">
+</head>
 <body>
-
-    <div class="alert">
+    <div class="alert-banner">
         <h5 id="off">🚀 Offer ends December 31: 00rs for lifetime access to Flocus Plus. Buy now, use forever →</h5>
     </div>
 
-    <div class = "hmpage">
-       <img id="logo" src="og11.png">
-      <a id="f1" href="indexa.html"><button id="sup">Features</button></a>
-      <button id="sup"><a id="sup1" href="https://mail.google.com/mail/?view=cm&to=ptembhare746@gmail.com&su=Support%20Request&body=Hi,%20I%20need%20help..." target="_blank">Support</a></button>
-      <a id="f1" href="indexc.html"><button id="sup">Donate</button></a>
-      <a id="f1" href="indexd.html"><button id="sup">👀 See Donors</button></a>
+    <header class="header">
+        <div class="nav-container">
+            <img id="logo" src="og11.png" alt="Momentum Logo">
+            <nav class="nav-menu">
+                <a href="indexa.html" class="nav-link">Features</a>
+                <a href="https://mail.google.com/mail/?view=cm&to=ptembhare746@gmail.com&su=Support%20Request&body=Hi,%20I%20need%20help..." target="_blank" class="nav-link support-link">Support</a>
+                <a href="indexc.html" class="nav-link">Donate</a>
+                <a href="indexd.html" class="nav-link donors-link">👀 See Donors</a>
+            </nav>
+            <button id="trp3" class="theme-toggle">🌙 Night Mode</button>
+        </div>
+    </header>
 
-    </div>
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                A beautiful way to get 
+                <br><span class="highlight">MORE DONE.</span>
+            </h1>
+            <a href="indexb.html" class="cta-button">
+                Go To 
+                <br><span class="cta-highlight">MOMENTUM</span>
+            </a>
+        </div>
+    </main>
 
-
-<div class="mid">
-<h1 id="txt1">A beautiful way to get <br> <span id="p"> MORE DONE.</span></h1>
-<button id="btn1"><a id="a" href="indexb.html" class="link-wrapper">Go To <br><span id="gt">MOMENTUM</span> </a> </button>
-
-
-    
-</div>
+    <!-- Habit Tracker will be inserted here by JS -->
+    <script src="tracker.js"></script>
 </body>
-
 </html>
-
-
