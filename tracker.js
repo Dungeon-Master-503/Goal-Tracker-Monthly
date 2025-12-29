@@ -1,9 +1,19 @@
-// FINAL FIX - TODAY HIGHLIGHT GUARANTEED
+// FINAL JS - TABLE + TODAY HIGHLIGHT FIXED
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
 document.addEventListener('DOMContentLoaded', function() {
-    createMonthlyHabitTracker();a
+    createMonthlyHabitTracker();
+    
+    // Theme toggle
+    const themeBtn = document.getElementById('trp3');
+    if (localStorage.getItem('darkMode') === 'enabled') {
+        document.body.classList.add('dark-mode');
+        themeBtn.textContent = '☀️ Light Mode';
+    }
+    themeBtn.addEventListener('click', function() {
+        document.body.classList.toggle('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
             localStorage.setItem('darkMode', 'enabled');
             themeBtn.textContent = '☀️ Light Mode';
         } else {
@@ -19,7 +29,21 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function createMonthlyHabitTracker() {
-    const table = document.querySelector('.habit-table');
+    // ✅ ENSURE TABLE STRUCTURE EXISTS
+    let table = document.querySelector('.habit-table');
+    if (!table) {
+        table = document.createElement('table');
+        table.className = 'habit-table';
+        const tableContainer = document.querySelector('.table-container');
+        tableContainer.appendChild(table);
+    }
+    
+    // ✅ BUILD COMPLETE TABLE STRUCTURE
+    table.innerHTML = `
+        <thead><tr></tr></thead>
+        <tbody></tbody>
+    `;
+    
     const thead = table.querySelector('thead tr');
     const tbody = table.querySelector('tbody');
     
@@ -31,19 +55,17 @@ function createMonthlyHabitTracker() {
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December'][currentMonth];
     
+    // ✅ MONTH HEADER
     thead.innerHTML = `<th>${monthName} ${currentYear}</th>`;
-    tbody.innerHTML = '';
     
-    // DAYS WITH PERFECT TODAY HIGHLIGHT
+    // ✅ DAYS HEADERS WITH TODAY HIGHLIGHT
     for (let i = 1; i <= daysInMonth; i++) {
         const th = document.createElement('th');
         const dateObj = new Date(currentYear, currentMonth, i);
         const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dateObj.getDay()];
         
         th.innerHTML = `${i}<br><small>${dayName}</small>`;
-        th.className = 'day-header';
         
-        // ✅ ABSOLUTE TODAY HIGHLIGHT
         if (i === todayDate) {
             th.id = 'today-column';
             th.classList.add('today');
@@ -52,9 +74,13 @@ function createMonthlyHabitTracker() {
         thead.appendChild(th);
     }
     
-    // 20 GOAL LIMIT
+    // ✅ CLEAR BODY
+    tbody.innerHTML = '';
+    
+    // ✅ 20 GOAL LIMIT
     const savedHabitsKey = `${monthName}${currentYear}-habits`;
     let habitsArray = JSON.parse(localStorage.getItem(savedHabitsKey)) || defaultHabits;
+    
     habitsArray.slice(0, 20).forEach((habit, habitIndex) => {
         const row = document.createElement('tr');
         const habitCell = document.createElement('td');
@@ -81,7 +107,7 @@ function createMonthlyHabitTracker() {
         tbody.appendChild(row);
     });
     
-    // ✅ FINAL HIGHLIGHT ENFORCEMENT (runs after table render)
+    // ✅ FORCE TODAY HIGHLIGHT AFTER RENDER
     setTimeout(() => {
         const todayCol = document.getElementById('today-column');
         if (todayCol) {
@@ -92,7 +118,6 @@ function createMonthlyHabitTracker() {
     }, 100);
 }
 
-// Rest of functions unchanged...
 function toggleEditMode() {
     editMode = !editMode;
     const editBtn = document.getElementById('edit-btn');
@@ -111,5 +136,12 @@ function saveHabits() {
     const habitCells = document.querySelectorAll('.habit-table tbody td:first-child');
     const newHabits = Array.from(habitCells).map(cell => cell.textContent.trim()).filter(habit => habit);
     
-    const monthName = ['January', '
+    const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
+                       'July', 'August', 'September', 'October', 'November', 'December'][new Date().getMonth()];
+    const currentYear = new Date().getFullYear();
+    
+    localStorage.setItem(`${monthName}${currentYear}-habits`, JSON.stringify(newHabits));
+}
 
+function addNewHabit() {
+    const monthName = ['January', '
