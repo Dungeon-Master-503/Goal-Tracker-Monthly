@@ -336,89 +336,79 @@ body[data-theme="dark"] {
 * {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
+/* PERFECT 20-GOAL TABLE - NO BREAKAGE */
+/* PERFECT 20-GOAL TABLE - NO BREAKAGE */
+.table-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    max-height: 85vh; /* Tall enough for 20 goals */
+}
 
-/* FIXED: Scrollable table WITHOUT name truncation */
 .habit-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.95rem;
-    background: transparent;
-    table-layout: fixed; /* FIXED: Prevents column squeezing */
 }
 
 .habit-table th,
 .habit-table td {
-    padding: 1.25rem 0.5rem; /* Reduced horizontal padding */
+    padding: 1rem 0.75rem;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
     vertical-align: middle;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .habit-table th:first-child,
 .habit-table td:first-child {
     text-align: left;
-    padding-left: 1.5rem; /* FIXED: More space for names */
-    min-width: 200px; /* FIXED: Wider first column */
-    max-width: 200px;
+    padding-left: 1.5rem;
+    min-width: 180px;
+    width: 180px; /* FIXED width */
     position: sticky;
     left: 0;
     background: var(--surface);
     z-index: 5;
     border-right: 2px solid var(--border-color);
-    white-space: normal; /* FIXED: Wrap long names */
-    word-break: break-word;
-    overflow: visible; /* FIXED: Show full names */
 }
 
-/* Scrollable tbody ONLY */
-.habit-table tbody {
-    max-height: 400px;
-    overflow-y: auto;
-    display: block;
-}
-
-.habit-table thead,
-.habit-table tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
-
-/* Day columns (narrower for checkboxes) */
+/* Day columns - equal width */
 .habit-table th:not(:first-child),
 .habit-table td:not(:first-child) {
-    width: calc((100% - 200px) / 31); /* Dynamic day width */
-    min-width: 45px; /* FIXED: Checkbox space */
+    min-width: 50px;
+    width: calc((100% - 180px) / 31);
 }
 
-.habit-table tbody::-webkit-scrollbar {
-    width: 6px;
-}
-
-.habit-table tbody::-webkit-scrollbar-track {
-    background: var(--border-color);
-    border-radius: 3px;
-}
-
-.habit-table tbody::-webkit-scrollbar-thumb {
-    background: var(--accent-blue);
-    border-radius: 3px;
-}
-
-/* 20 GOALS - TALL SCROLLABLE TABLE */
-.habit-table tbody {
-    max-height: 700px; /* Shows ~12 rows + scroll for 20 */
+/* PERFECT SCROLL - Only container scrolls */
+.table-container {
     overflow-y: auto;
-    display: block;
+    overflow-x: hidden;
+    scrollbar-width: thin;
 }
 
-.habit-table thead, 
-.habit-table tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
+.table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: var(--accent-blue);
+    border-radius: 4px;
+}
+
+/* Header sticky */
+.habit-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
