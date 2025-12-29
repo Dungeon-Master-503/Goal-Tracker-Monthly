@@ -132,3 +132,17 @@ body.dark-mode .habit-table td {
     border-bottom-color: #444;
 }
 
+.calendar-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin; /* Hide scrollbar if desired */
+}
+.day {
+  flex: 0 0 auto; /* Fixed width per day */
+  scroll-snap-align: start;
+  min-width: 40px; /* Match your grid */
+}
+
+
+
