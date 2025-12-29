@@ -1,4 +1,4 @@
-/* trp.css - COMPLETE WITH TODAY HIGHLIGHT FIX */
+/* trp.css - COMPLETE FIXED VERSION */
 * {
     margin: 0;
     padding: 0;
@@ -154,7 +154,7 @@ body[data-theme="dark"] {
 }
 
 #delete-habit-btn {
-    background: linear-gradient(135deg, var(--accent-orange), #d97706) !important;
+    background: linear-gradient(135deg, var(--accent-orange), #d97706);
     color: white;
 }
 
@@ -169,32 +169,34 @@ body[data-theme="dark"] {
 }
 
 #delete-habit-btn:hover {
-    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
 }
 
-/* PERFECT HORIZONTAL + VERTICAL SCROLL TABLE */
+/* FIXED TABLE CONTAINER - TABLE VISIBLE */
 .table-container {
-    max-width: 100%;
+    max-width: 1200px;
     margin: 0 auto;
     background: var(--surface);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
     overflow: auto;
-    max-height: 85vh;
-    min-width: 900px;
+    max-height: 80vh;
+    border: 1px solid var(--border-color);
+    display: block !important;
 }
 
+/* FIXED HABIT TABLE - VISIBLE + SCROLLABLE */
 .habit-table {
     width: 100%;
-    min-width: 1200px;
+    min-width: 1000px;
     border-collapse: collapse;
     font-size: 0.95rem;
-    background: transparent;
+    table-layout: auto;
 }
 
 .habit-table th,
 .habit-table td {
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.75rem;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
     vertical-align: middle;
@@ -205,23 +207,16 @@ body[data-theme="dark"] {
 .habit-table td:first-child {
     text-align: left;
     padding-left: 1.5rem;
-    width: 220px;
-    min-width: 220px;
+    min-width: 200px;
+    width: 200px;
     position: sticky;
     left: 0;
-    background: var(--surface);
     z-index: 5;
+    background: var(--surface) !important;
     border-right: 2px solid var(--border-color);
-    font-weight: 500;
 }
 
-.habit-table th:not(:first-child),
-.habit-table td:not(:first-child) {
-    width: 55px;
-    min-width: 55px;
-}
-
-/* ⚠️ BULLETPROOF TODAY HIGHLIGHT - HIGHEST PRIORITY */
+/* BULLETPROOF TODAY HIGHLIGHT - TOP PRIORITY */
 #today-column,
 .habit-table th.today,
 .habit-table th.today * {
@@ -232,14 +227,20 @@ body[data-theme="dark"] {
     z-index: 100 !important;
 }
 
-/* Header styles - SECONDARY (today overrides this) */
+/* Header styles */
 .habit-table th {
-    background: linear-gradient(135deg, var(--accent-blue), #2563eb) !important;
+    background: linear-gradient(135deg, var(--accent-blue), #2563eb);
     color: white;
     font-weight: 600;
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.habit-table thead th {
     position: sticky;
     top: 0;
     z-index: 10;
@@ -331,15 +332,13 @@ body[data-theme="dark"] {
     }
     
     .table-container {
-        min-width: 100vw;
+        margin: 0 -0.5rem;
         border-radius: 16px;
-        margin: 0 -1rem;
+        min-width: calc(100vw - 1rem);
     }
     
-    .habit-table th,
-    .habit-table td {
-        padding: 0.75rem 0.25rem;
-        font-size: 0.85rem;
+    .habit-table {
+        min-width: 800px;
     }
 }
 
