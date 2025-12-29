@@ -1,4 +1,4 @@
-// COMPLETE JS - WITH DELETE GOAL BUTTON
+// COMPLETE JS - WITH TODAY HIGHLIGHT FIXED
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
@@ -38,24 +38,30 @@ function createMonthlyHabitTracker() {
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+    const todayDate = today.getDate(); // ✅ TODAY'S DATE
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December'][currentMonth];
     
     thead.innerHTML = `<th>${monthName} ${currentYear}</th>`;
     tbody.innerHTML = '';
     
-    // Days headers
+    // Days headers WITH TODAY HIGHLIGHT ✅ FIXED
     for (let i = 1; i <= daysInMonth; i++) {
         const th = document.createElement('th');
         const dateObj = new Date(currentYear, currentMonth, i);
         const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dateObj.getDay()];
         
         th.innerHTML = `${i}<br><small>${dayName}</small>`;
-        if (i === today.getDate()) {
+        th.style.cssText = 'font-size:12px;text-align:center;padding:8px 4px;white-space:nowrap;';
+        
+        // ✅ PERFECT TODAY HIGHLIGHT - Both class + inline
+        if (i === todayDate) {
+            th.classList.add('today');
             th.style.background = '#FFD700';
             th.style.color = '#000';
             th.style.fontWeight = 'bold';
         }
+        
         thead.appendChild(th);
     }
     
@@ -134,7 +140,7 @@ function addNewHabit() {
     }
 }
 
-// 🆕 NEW DELETE FUNCTION
+// 🆕 DELETE FUNCTION
 function deleteHabit() {
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                       'July', 'August', 'September', 'October', 'November', 'December'][new Date().getMonth()];
