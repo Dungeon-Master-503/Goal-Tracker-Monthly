@@ -172,7 +172,7 @@ body[data-theme="dark"] {
     background: linear-gradient(135deg, #f59e0b, #d97706);
 }
 
-/* FIXED TABLE CONTAINER - TABLE VISIBLE */
+/* FIXED TABLE CONTAINER - PROPER DISPLAY */
 .table-container {
     max-width: 1200px;
     margin: 0 auto;
@@ -182,10 +182,9 @@ body[data-theme="dark"] {
     overflow: auto;
     max-height: 80vh;
     border: 1px solid var(--border-color);
-    display: block !important;
 }
 
-/* FIXED HABIT TABLE - VISIBLE + SCROLLABLE */
+/* FIXED HABIT TABLE - NO FLEX, PROPER TABLE LAYOUT */
 .habit-table {
     width: 100%;
     min-width: 1000px;
@@ -208,22 +207,19 @@ body[data-theme="dark"] {
     text-align: left;
     padding-left: 1.5rem;
     min-width: 200px;
-    width: 200px;
     position: sticky;
     left: 0;
     z-index: 5;
-    background: var(--surface) !important;
+    background: var(--surface);
     border-right: 2px solid var(--border-color);
 }
 
-/* BULLETPROOF TODAY HIGHLIGHT - TOP PRIORITY */
+/* TODAY HIGHLIGHT */
 #today-column,
-.habit-table th.today,
-.habit-table th.today * {
+.habit-table th.today {
     background: #FFD700 !important;
     color: #000 !important;
     font-weight: 700 !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2) !important;
     z-index: 100 !important;
 }
 
@@ -235,12 +231,6 @@ body[data-theme="dark"] {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-}
-
-.habit-table thead th {
     position: sticky;
     top: 0;
     z-index: 10;
@@ -266,33 +256,54 @@ body[data-theme="dark"] {
     background: #2563eb;
 }
 
-.habit-check {
-    width: 20px;
-    height: 20px;
-    accent-color: var(--accent-green);
-    cursor: pointer;
-    transform: scale(1.1);
-    transition: transform 0.2s ease;
+/* FIXED HABIT CELL - BIGGER MARKS */
+.habit-cell {
+    cursor: pointer !important;
+    user-select: none;
+    text-align: center;
+    padding: 0.5rem;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.habit-check:hover {
-    transform: scale(1.3);
-}
-
-.habit-check:checked {
-    background-color: var(--accent-green) !important;
-    border-color: var(--accent-green) !important;
-}
-
-/* Content editable */
-.habit-table td[contenteditable="true"] {
+.habit-cell:hover {
     background: rgba(59, 130, 246, 0.1);
-    border-radius: 8px;
-    cursor: text;
+    border-radius: 6px;
 }
 
-[data-theme="dark"] .habit-table td[contenteditable="true"] {
-    background: rgba(59, 130, 246, 0.2);
+/* BIGGER MARKS - 2em SIZE */
+.habit-success { 
+    color: #10b981; 
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.habit-fail { 
+    color: #ef4444; 
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.habit-empty { 
+    color: #94a3b8; 
+    font-size: 1.8em;
+    cursor: pointer;
+    line-height: 1;
+}
+
+/* FORCE POINTER CURSOR */
+.habit-table tbody td:not(:first-child) {
+    cursor: pointer !important;
+}
+
+.habit-cell span {
+    cursor: pointer !important;
 }
 
 .habit-table tr {
@@ -334,11 +345,6 @@ body[data-theme="dark"] {
     .table-container {
         margin: 0 -0.5rem;
         border-radius: 16px;
-        min-width: calc(100vw - 1rem);
-    }
-    
-    .habit-table {
-        min-width: 800px;
     }
 }
 
@@ -360,60 +366,3 @@ body[data-theme="dark"] {
 * {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-/* RED MARK BUTTON FR=EATURE */
-
-/* FIXED CURSOR + BIGGER MARKS */
-.habit-cell {
-    cursor: pointer !important;
-    user-select: none;
-    text-align: center;
-    padding: 0.5rem;
-    min-height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.habit-cell:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-radius: 6px;
-}
-
-/* ✅ BIGGER MARKS - 2em SIZE */
-.habit-success { 
-    color: #10b981; 
-    font-size: 2em;
-    font-weight: bold;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.habit-fail { 
-    color: #ef4444; 
-    font-size: 2em;
-    font-weight: bold;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.habit-empty { 
-    color: #94a3b8; 
-    font-size: 1.8em;
-    cursor: pointer;
-    line-height: 1;
-}
-
-/* FORCE POINTER ON ALL */
-.habit-table tbody td:not(:first-child) {
-    cursor: pointer !important;
-}
-
-.habit-cell span {
-    cursor: pointer !important;
-}
-
-
-
-
-
