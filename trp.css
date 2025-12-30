@@ -361,9 +361,36 @@ body[data-theme="dark"] {
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* RED MARK BUTTON FR=EATURE */
 
-.habit-success { color: #10b981; font-size: 1.2em; font-weight: bold; }
-.habit-fail { color: #ef4444; font-size: 1.2em; font-weight: bold; }
-.habit-empty { color: #64748b; font-size: 1.2em; }
+.habit-cell {
+    cursor: pointer;
+    user-select: none;
+}
+
+.habit-cell:hover {
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 4px;
+}
+
+.habit-success { 
+    color: #10b981; 
+    font-size: 1.3em; 
+    font-weight: bold; 
+}
+
+.habit-fail { 
+    color: #ef4444; 
+    font-size: 1.3em; 
+    font-weight: bold; 
+}
+
+.habit-empty { 
+    color: #94a3b8; 
+    font-size: 1.2em; 
+    cursor: pointer;
+}
+
+
 
 
