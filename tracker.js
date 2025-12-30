@@ -1,4 +1,4 @@
-// COMPLETE JS - GREEN ✓ + RED ❌ + EMPTY ○
+// COMPLETE JS - RED ❌ MARK WORKING
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
@@ -84,11 +84,14 @@ function createMonthlyHabitTracker() {
         for (let day = 1; day <= daysInMonth; day++) {
             const cell = document.createElement('td');
             const status = getHabitStatus(habitIndex, day, monthName, currentYear);
+            cell.className = 'habit-cell';
             cell.innerHTML = createHabitMark(status);
             
-            // ✅ 3-STATE CLICK HANDLER: ○ → ✓ → ❌ → ○
-            cell.addEventListener('click', () => {
-                const newStatus = cycleHabitStatus(status);
+            // ✅ FIXED CLICK HANDLER - WORKS NOW
+            cell.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const currentStatus = getHabitStatus(habitIndex, day, monthName, currentYear);
+                const newStatus = cycleHabitStatus(currentStatus);
                 setHabitStatus(habitIndex, day, newStatus, monthName, currentYear);
                 cell.innerHTML = createHabitMark(newStatus);
             });
@@ -111,7 +114,8 @@ function createMonthlyHabitTracker() {
 // ✅ 3-STATE SYSTEM: empty(0), success(1), fail(-1)
 function getHabitStatus(habitIndex, day, monthName, year) {
     const saved = localStorage.getItem(`${monthName}${year}-${habitIndex}-day${day}`);
-    return saved === null ? 0 : parseInt(saved);
+    if (saved === null) return 0;
+    return parseInt(saved);
 }
 
 function setHabitStatus(habitIndex, day, status, monthName, year) {
@@ -119,17 +123,19 @@ function setHabitStatus(habitIndex, day, status, monthName, year) {
 }
 
 function cycleHabitStatus(currentStatus) {
-    return currentStatus === 0 ? 1 : currentStatus === 1 ? -1 : 0; // ○ → ✓ → ❌ → ○
+    if (currentStatus === 0) return 1;      // ○ → ✓
+    if (currentStatus === 1) return -1;     // ✓ → ❌
+    if (currentStatus === -1) return 0;     // ❌ → ○
+    return 0;
 }
 
 function createHabitMark(status) {
-    switch(status) {
-        case 1:  // Success ✓
-            return '<span class="habit-success">✓</span>';
-        case -1: // Fail ❌
-            return '<span class="habit-fail">❌</span>';
-        default: // Empty ○
-            return '<span class="habit-empty">○</span>';
+    if (status === 1) {
+        return '<span class="habit-success">✓</span>';
+    } else if (status === -1) {
+        return '<span class="habit-fail">❌</span>';
+    } else {
+        return '<span class="habit-empty">○</span>';
     }
 }
 
