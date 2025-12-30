@@ -1,4 +1,4 @@
-// COMPLETE JS - TODAY HIGHLIGHT 100% FIXED
+// COMPLETE JS - GREEN ✓ + RED ❌ + EMPTY ○
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // ALL BUTTON EVENT LISTENERS
     document.getElementById('edit-btn').addEventListener('click', toggleEditMode);
     document.getElementById('add-habit-btn').addEventListener('click', addNewHabit);
     document.getElementById('delete-habit-btn').addEventListener('click', deleteHabit);
@@ -30,7 +29,18 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function createMonthlyHabitTracker() {
-    const table = document.querySelector('.habit-table');
+    let table = document.querySelector('.habit-table');
+    if (!table) {
+        table = document.createElement('table');
+        table.className = 'habit-table';
+        document.querySelector('.table-container').appendChild(table);
+    }
+    
+    table.innerHTML = `
+        <thead><tr></tr></thead>
+        <tbody></tbody>
+    `;
+    
     const thead = table.querySelector('thead tr');
     const tbody = table.querySelector('tbody');
     
@@ -38,36 +48,32 @@ function createMonthlyHabitTracker() {
     const currentYear = today.getFullYear();
     const currentMonth = today.getMonth();
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    const todayDate = today.getDate(); // ✅ TODAY'S DATE
+    const todayDate = today.getDate();
     const monthName = ['January', 'February', 'March', 'April', 'May', 'June',
                        'July', 'August', 'September', 'October', 'November', 'December'][currentMonth];
     
     thead.innerHTML = `<th>${monthName} ${currentYear}</th>`;
-    tbody.innerHTML = '';
     
-    // ✅ BULLETPROOF DAYS WITH TODAY HIGHLIGHT
     for (let i = 1; i <= daysInMonth; i++) {
         const th = document.createElement('th');
         const dateObj = new Date(currentYear, currentMonth, i);
         const dayName = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][dateObj.getDay()];
         
         th.innerHTML = `${i}<br><small>${dayName}</small>`;
-        th.className = 'day-header';
-        th.style.cssText = 'font-size:12px;text-align:center;padding:8px 4px;white-space:nowrap;';
         
-        // ✅ TRIPLE TODAY HIGHLIGHT SYSTEM
         if (i === todayDate) {
-            th.id = 'today-column';           // ID selector (highest priority)
-            th.classList.add('today');         // Class selector  
-            th.dataset.today = 'true';         // Data attribute
+            th.id = 'today-column';
+            th.classList.add('today');
         }
         
         thead.appendChild(th);
     }
     
-    // 20 GOAL LIMIT
+    tbody.innerHTML = '';
+    
     const savedHabitsKey = `${monthName}${currentYear}-habits`;
     let habitsArray = JSON.parse(localStorage.getItem(savedHabitsKey)) || defaultHabits;
+    
     habitsArray.slice(0, 20).forEach((habit, habitIndex) => {
         const row = document.createElement('tr');
         const habitCell = document.createElement('td');
@@ -77,36 +83,53 @@ function createMonthlyHabitTracker() {
         
         for (let day = 1; day <= daysInMonth; day++) {
             const cell = document.createElement('td');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'habit-check';
+            const status = getHabitStatus(habitIndex, day, monthName, currentYear);
+            cell.innerHTML = createHabitMark(status);
             
-            const saved = localStorage.getItem(`${monthName}${currentYear}-${habitIndex}-day${day}`);
-            checkbox.checked = saved === 'true';
-            
-            checkbox.addEventListener('change', () => {
-                localStorage.setItem(`${monthName}${currentYear}-${habitIndex}-day${day}`, checkbox.checked);
+            // ✅ 3-STATE CLICK HANDLER: ○ → ✓ → ❌ → ○
+            cell.addEventListener('click', () => {
+                const newStatus = cycleHabitStatus(status);
+                setHabitStatus(habitIndex, day, newStatus, monthName, currentYear);
+                cell.innerHTML = createHabitMark(newStatus);
             });
             
-            cell.appendChild(checkbox);
             row.appendChild(cell);
         }
         tbody.appendChild(row);
     });
     
-    // ✅ FINAL ENFORCEMENT - Runs after CSS loads
-    setTimeout(() => forceTodayHighlight(todayDate), 50);
+    setTimeout(() => {
+        const todayCol = document.getElementById('today-column');
+        if (todayCol) {
+            todayCol.style.background = '#FFD700';
+            todayCol.style.color = '#000';
+            todayCol.style.fontWeight = 'bold';
+        }
+    }, 100);
 }
 
-function forceTodayHighlight(todayDate) {
-    const todayCol = document.getElementById('today-column');
-    if (todayCol) {
-        // TRIPLE OVERRIDE SYSTEM
-        todayCol.style.setProperty('background', '#FFD700', 'important');
-        todayCol.style.setProperty('color', '#000', 'important');
-        todayCol.style.setProperty('font-weight', 'bold', 'important');
-        todayCol.style.setProperty('box-shadow', 'inset 0 2px 4px rgba(0,0,0,0.2)', 'important');
-        todayCol.style.setProperty('z-index', '100', 'important');
+// ✅ 3-STATE SYSTEM: empty(0), success(1), fail(-1)
+function getHabitStatus(habitIndex, day, monthName, year) {
+    const saved = localStorage.getItem(`${monthName}${year}-${habitIndex}-day${day}`);
+    return saved === null ? 0 : parseInt(saved);
+}
+
+function setHabitStatus(habitIndex, day, status, monthName, year) {
+    localStorage.setItem(`${monthName}${year}-${habitIndex}-day${day}`, status.toString());
+}
+
+function cycleHabitStatus(currentStatus) {
+    return currentStatus === 0 ? 1 : currentStatus === 1 ? -1 : 0; // ○ → ✓ → ❌ → ○
+}
+
+function createHabitMark(status) {
+    switch(status) {
+        case 1:  // Success ✓
+            return '<span class="habit-success">✓</span>';
+        case -1: // Fail ❌
+            return '<span class="habit-fail">❌</span>';
+        default: // Empty ○
+            return '<span class="habit-empty">○</span>';
     }
 }
 
@@ -182,18 +205,6 @@ function deleteHabit() {
                     localStorage.removeItem(key);
                 }
             });
-            
-            for (let i = index; i < savedHabits.length; i++) {
-                for (let day = 1; day <= 31; day++) {
-                    const oldKey = `${monthName}${currentYear}-${i}-day${day}`;
-                    const newKey = `${monthName}${currentYear}-${(i+1)}-day${day}`;
-                    const value = localStorage.getItem(oldKey);
-                    if (value) {
-                        localStorage.setItem(newKey, value);
-                        localStorage.removeItem(oldKey);
-                    }
-                }
-            }
             
             createMonthlyHabitTracker();
             alert('✅ Goal deleted successfully!');
