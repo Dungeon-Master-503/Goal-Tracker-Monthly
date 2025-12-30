@@ -1,4 +1,4 @@
-// COMPLETE JS - RED ❌ MARK WORKING
+// COMPLETE JS - CURSOR FIX + BIGGER MARKS + RED ❌
 let editMode = false;
 const defaultHabits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
 
@@ -54,6 +54,7 @@ function createMonthlyHabitTracker() {
     
     thead.innerHTML = `<th>${monthName} ${currentYear}</th>`;
     
+    // ✅ DAYS HEADERS WITH TODAY HIGHLIGHT
     for (let i = 1; i <= daysInMonth; i++) {
         const th = document.createElement('th');
         const dateObj = new Date(currentYear, currentMonth, i);
@@ -71,6 +72,7 @@ function createMonthlyHabitTracker() {
     
     tbody.innerHTML = '';
     
+    // ✅ 20 GOAL LIMIT
     const savedHabitsKey = `${monthName}${currentYear}-habits`;
     let habitsArray = JSON.parse(localStorage.getItem(savedHabitsKey)) || defaultHabits;
     
@@ -83,11 +85,13 @@ function createMonthlyHabitTracker() {
         
         for (let day = 1; day <= daysInMonth; day++) {
             const cell = document.createElement('td');
+            cell.className = 'habit-cell'; // ✅ CLASS FOR STYLING
+            cell.style.cursor = 'pointer'; // ✅ FORCE POINTER CURSOR
+            
             const status = getHabitStatus(habitIndex, day, monthName, currentYear);
-            cell.className = 'habit-cell';
             cell.innerHTML = createHabitMark(status);
             
-            // ✅ FIXED CLICK HANDLER - WORKS NOW
+            // ✅ CLICK HANDLER - 3-STATE CYCLE
             cell.addEventListener('click', function(e) {
                 e.stopPropagation();
                 const currentStatus = getHabitStatus(habitIndex, day, monthName, currentYear);
@@ -101,6 +105,7 @@ function createMonthlyHabitTracker() {
         tbody.appendChild(row);
     });
     
+    // ✅ TODAY HIGHLIGHT ENFORCEMENT
     setTimeout(() => {
         const todayCol = document.getElementById('today-column');
         if (todayCol) {
@@ -129,6 +134,7 @@ function cycleHabitStatus(currentStatus) {
     return 0;
 }
 
+// ✅ BIGGER MARKS - EASY TO CLICK
 function createHabitMark(status) {
     if (status === 1) {
         return '<span class="habit-success">✓</span>';
