@@ -380,43 +380,36 @@ body[data-theme="dark"] {
     border-radius: 6px;
 }
 
-/* ✅ BIGGER MARKS - EASY TO CLICK */
+/* ✅ BIGGER MARKS - 2em SIZE */
 .habit-success { 
     color: #10b981; 
-    font-size: 2em;  /* BIGGER */
+    font-size: 2em;
     font-weight: bold;
     line-height: 1;
+    cursor: pointer;
 }
 
 .habit-fail { 
     color: #ef4444; 
-    font-size: 2em;  /* BIGGER */
+    font-size: 2em;
     font-weight: bold;
     line-height: 1;
+    cursor: pointer;
 }
 
 .habit-empty { 
     color: #94a3b8; 
-    font-size: 1.8em;  /* BIGGER */
-    cursor: pointer !important;
+    font-size: 1.8em;
+    cursor: pointer;
     line-height: 1;
 }
 
-/* REMOVE POINTER CURSOR FROM TABLE */
-.habit-table {
-    cursor: auto;
-}
-
-.habit-table td {
-    cursor: auto;
-}
-
+/* FORCE POINTER ON ALL */
 .habit-table tbody td:not(:first-child) {
     cursor: pointer !important;
 }
 
-/* FORCE POINTER ON HOVER */
-.habit-cell:hover span {
+.habit-cell span {
     cursor: pointer !important;
 }
 
