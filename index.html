@@ -73,9 +73,32 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
 </script>
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;  // Save install prompt
+  document.getElementById('install-btn').style.display = 'block';
+});
+
+document.getElementById('install-btn').addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();  // Show install dialog
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;    // Clear prompt
+  }
+});
+
+// Hide button if already installed
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-btn').style.display = 'none';
+});
+</script>
 
 </body>
 </html>
+
 
 
 
