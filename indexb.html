@@ -2,79 +2,64 @@
 <html lang="en">
 <head>
   <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-3DWWNN52ER"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-3DWWNN52ER');
-</script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Momentum - Habit Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="trp.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3DWWNN52ER"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3DWWNN52ER');
+  </script>
+  
+  <!-- 🔥 CHART.JS CDN - REQUIRED -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Momentum - Habit Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="trp.css">
 </head>
 <body>
-    <!-- Theme Toggle -->
-    <div class="theme-control">
-<!-- ADD THIS before <table class="habit-table"> -->
-<div class="charts-container">
+  <!-- Theme Toggle -->
+  <div class="theme-control">
+    <button id="trp3" class="theme-toggle" aria-label="Toggle dark mode">🌙 Night Mode</button>
+  </div>
+
+  <!-- Header -->
+  <header class="tracker-header">
+    <h1 id="trp2" class="page-title">Track your Habits</h1>
+  </header>
+
+  <!-- Action Buttons -->
+  <div class="action-bar">
+    <div class="button-group">
+      <button id="edit-btn" class="action-btn edit-btn" aria-label="Edit habit goals">✏️ Edit Goals</button>
+      <button id="add-habit-btn" class="action-btn add-btn" aria-label="Add new habit">➕ Add Habit</button>
+      <button id="reset-btn" class="action-btn reset-btn" aria-label="Reset monthly data">🔄 Reset</button>
+      <button id="delete-habit-btn" class="action-btn" style="background: linear-gradient(135deg, var(--accent-orange), #d97706);">🗑️ Delete Goal</button>
+    </div>
+  </div>
+
+  <!-- 🔥 CHARTS CONTAINER - FIXED -->
+  <div class="charts-container">
     <div class="chart-wrapper">
-        <h3>🥧 Goal Completion</h3>
-        anvas id="pieChart"></canvas>
+      <h3>🥧 Goal Completion</h3>
+      <canvas id="pieChart" width="400" height="400"></canvas>
     </div>
     <div class="chart-wrapper">
-        <h3>📊 Daily Progress</h3>
-        anvas id="barChart"></canvas>
+      <h3>📊 Daily Progress</h3>
+      <canvas id="barChart" width="400" height="400"></canvas>
     </div>
-</div>
-        <button id="trp3" class="theme-toggle" aria-label="Toggle dark mode">🌙 Night Mode</button>
-    </div>
+  </div>
 
-    <!-- Header -->
-    <header class="tracker-header">
-        <h1 id="trp2" class="page-title">Track your Habits</h1>
-    </header>
+  <!-- Habit Tracker Table -->
+  <div class="table-container">
+    <table class="habit-table">
+      <thead><tr></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-    <!-- Action Buttons -->
-    <div class="action-bar">
-        <div class="button-group">
-            <button id="edit-btn" class="action-btn edit-btn" aria-label="Edit habit goals">
-                ✏️ Edit Goals
-            </button>
-            <button id="add-habit-btn" class="action-btn add-btn" aria-label="Add new habit">
-                ➕ Add Habit
-            </button>
-            <button id="reset-btn" class="action-btn reset-btn" aria-label="Reset monthly data">
-                🔄 Reset
-            </button>
-            <div class="button-group">
-    <button id="delete-habit-btn" class="action-btn" style="background: linear-gradient(135deg, var(--accent-orange), #d97706);">🗑️ Delete Goal</button>
-</div>
-
-        </div>
-    </div>
-
-    <!-- Habit Tracker Table -->
-    <div class="table-container">
-        <table class="habit-table">
-            <thead>
-                <tr></tr>
-            </thead>
-            <tbody></tbody>
-        </table>
-    </div>
-  <!-- ADD THIS in <head> -
-
-
-    <script src="tracker.js"></script>
+  <script src="tracker.js"></script>
 </body>
 </html>
-
-
-
-
-
-
