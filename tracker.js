@@ -241,3 +241,134 @@ function resetMonthlyData() {
         createMonthlyHabitTracker();
     }
 }
+
+// Chart.js Global Variables
+let pieChart, barChart;
+
+// Function to calculate goal completion data
+function getGoalProgressData() {
+    const habits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
+    const progressData = [];
+    
+    habits.forEach(habit => {
+        let completed = 0;
+        for (let day = 1; day <= 29; day++) {
+            const key = `${getMonthName()}${new Date().getFullYear()}-${habit}-day${day}`;
+            if (localStorage.getItem(key)) completed++;
+        }
+        progressData.push({
+            name: habit,
+            completed: completed,
+            total: 29,
+            percentage: Math.round((completed / 29) * 100)
+        });
+    });
+    
+    return progressData;
+}
+
+// Function to get daily progress (average completions per day)
+function getDailyProgressData() {
+    const habits = ['Read 30min', 'Exercise', 'Water 2L', 'Meditate'];
+    const dailyData = [];
+    
+    for (let day = 1; day <= 29; day++) {
+        let dayCompletions = 0;
+        habits.forEach(habit => {
+            const key = `${getMonthName()}${new Date().getFullYear()}-${habit}-day${day}`;
+            if (localStorage.getItem(key)) dayCompletions++;
+        });
+        dailyData.push(dayCompletions);
+    }
+    
+    return dailyData;
+}
+
+// Create Charts
+function createProgressCharts() {
+    const progressData = getGoalProgressData();
+    const dailyData = getDailyProgressData();
+    
+    // Destroy existing charts if they exist
+    if (pieChart) pieChart.destroy();
+    if (barChart) barChart.destroy();
+    
+    // Pie Chart - Goal Completion
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    pieChart = new Chart(pieCtx, {
+        type: 'doughnut',
+        data: {
+            labels: progressData.map(d => d.name),
+            datasets: [{
+                data: progressData.map(d => d.completed),
+                backgroundColor: [
+                    '#4CAF50', '#2196F3', '#FF9800', '#9C27B0'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = progressData[context.dataIndex].total;
+                            const percentage = progressData[context.dataIndex].percentage;
+                            return `${context.label}: ${context.parsed} / ${total} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+    
+    // Bar Chart - Daily Progress
+    const barCtx = document.getElementById('barChart').getContext('2d');
+    barChart = new Chart(barCtx, {
+        type: 'bar',
+        data: {
+            labels: Array.from({length: 29}, (_, i) => `Day ${i+1}`),
+            datasets: [{
+                label: 'Goals Completed',
+                data: dailyData,
+                backgroundColor: 'rgba(76, 175, 80, 0.7)',
+                borderColor: '#4CAF50',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 4,
+                    ticks: { stepSize: 1 }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+}
+
+// Update createMonthlyHabitTracker() - ADD THIS LINE AT END
+function createMonthlyHabitTracker() {
+    // ... your existing code ...
+    
+    // ADD THIS LINE AT THE VERY END
+    setTimeout(createProgressCharts, 100); // Charts update after table renders
+}
+
+// Update reset function to refresh charts
+document.getElementById('resetBtn').addEventListener('click', function() {
+    // ... your existing reset code ...
+    createMonthlyHabitTracker(); // This will auto-refresh charts
+});
+
