@@ -9,8 +9,8 @@ const urlsToCache = [
   '/thirdcs.css',
   '/trp.css',
   '/manifest.json',
-  '/icon-192.png',
-  '/icon-512.png'
+  '/og11.png',
+  '/og12.png'
 ];
 
 self.addEventListener('install', event => {
@@ -25,7 +25,6 @@ self.addEventListener('fetch', event => {
     caches.match(event.request)
       .then(response => response || fetch(event.request))
       .catch(() => {
-        // Fallback for offline - serve index.html
         return caches.match('/index.html');
       })
   );
