@@ -282,3 +282,74 @@ body.dark-mode .habit-table tr:hover { background: rgba(59, 130, 246, 0.15); }
   body { padding: 1rem 0.5rem; }
   .button-group { flex-direction: column; align-items: stretch; }
 }
+
+/* 🔥 40px CHECKBOX + MATCHING ICONS */
+.habit-cell {
+    position: relative;
+    min-height: 65px !important;  /* Room for 40px checkbox */
+    padding: 0.75rem !important;
+}
+
+.habit-cell input[type="checkbox"] {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px !important;     /* Bigger checkbox */
+    height: 40px !important;    /* Bigger checkbox */
+    cursor: pointer;
+    margin: 0;
+    z-index: 5;
+}
+
+.habit-cell::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 15;
+    font-weight: 900;
+    line-height: 1;
+}
+
+/* ✅ Success - Matches 40px checkbox */
+.habit-cell.habit-success::before {
+    content: '✅';
+    font-size: 38px !important;  /* Perfect for 40px */
+    color: var(--accent-green) !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.habit-cell.habit-success input[type="checkbox"] {
+    accent-color: var(--accent-green);
+    border: 3px solid var(--accent-green);
+}
+
+/* ❌ Fail - Matches 40px checkbox */
+.habit-cell.habit-fail::before {
+    content: '❌';
+    font-size: 36px !important;  /* Perfect for 40px */
+    color: var(--accent-red) !important;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+
+.habit-cell.habit-fail input[type="checkbox"] {
+    accent-color: var(--accent-red);
+    border: 3px solid var(--accent-red);
+    background: rgba(254, 226, 226, 0.6);
+    opacity: 0.5;
+}
+
+/* ○ Empty - Matches 40px checkbox */
+.habit-cell.habit-empty::before {
+    content: '○';
+    font-size: 24px !important;  /* Perfect for 40px */
+    color: var(--text-secondary);
+}
+
+/* Hover - Scales both */
+.habit-cell:hover::before,
+.habit-cell:hover input[type="checkbox"] {
+    transform: translate(-50%, -50%) scale(1.08);
+}
