@@ -1,4 +1,4 @@
-/* trp.css - COMPLETE WORKING FIX WITH CHARTS */
+/* trp.css - COMPLETE WORKING FIX */
 * {
   margin: 0;
   padding: 0;
@@ -50,7 +50,7 @@ body.dark-mode {
   background: linear-gradient(135deg, var(--bg-primary) 0%, #1e1b4b 100%);
 }
 
-/* 🔥 CHARTS - COMPLETE STYLING */
+/* CHARTS */
 .charts-container {
   display: flex;
   gap: 20px;
@@ -126,13 +126,7 @@ body.dark-mode .chart-wrapper h3 {
   gap: 0.5rem;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--accent-blue);
-}
-
-/* Header */
+/* Header & Action Bar */
 .tracker-header {
   max-width: 1200px;
   margin: 0 auto 3rem;
@@ -147,10 +141,8 @@ body.dark-mode .chart-wrapper h3 {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 1rem;
-  letter-spacing: -0.02em;
 }
 
-/* Action Buttons */
 .action-bar {
   max-width: 1200px;
   margin: 0 auto 3rem;
@@ -158,7 +150,6 @@ body.dark-mode .chart-wrapper h3 {
   background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
-  backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
 }
 
@@ -174,14 +165,11 @@ body.dark-mode .chart-wrapper h3 {
   border: none;
   border-radius: var(--radius-lg);
   font-weight: 600;
-  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-sm);
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  backdrop-filter: blur(10px);
   min-height: 52px;
 }
 
@@ -189,12 +177,7 @@ body.dark-mode .chart-wrapper h3 {
 .add-btn { background: linear-gradient(135deg, var(--accent-green), #059669); color: white; }
 .reset-btn { background: linear-gradient(135deg, var(--accent-red), #dc2626); color: white; }
 
-.action-btn:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-}
-
-/* TABLE CONTAINER */
+/* TABLE CONTAINER & STICKY FIXES */
 .table-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -210,84 +193,55 @@ body.dark-mode .chart-wrapper h3 {
   width: 100%;
   min-width: 1200px;
   border-collapse: collapse;
-  font-size: 0.95rem;
 }
 
-.habit-table th, .habit-table td {
-  padding: 1rem 0.75rem;
-  text-align: center;
-  border-bottom: 1px solid var(--border-color);
-  vertical-align: middle;
-}
-
-.habit-table th:first-child, .habit-table td:first-child {
-  text-align: left;
-  padding-left: 1.5rem;
-  min-width: 200px;
+/* Sticky Habit Column Fix */
+.habit-table th:first-child, 
+.habit-table td:first-child {
   position: sticky;
   left: 0;
-  background: var(--surface);
-  z-index: 5;
+  background-color: var(--surface) !important; /* Solid color hides background */
+  z-index: 20; /* High enough to stay above checkmarks */
+  min-width: 220px;
+  text-align: left;
+  padding-left: 1.5rem;
   border-right: 2px solid var(--border-color);
 }
 
-.habit-table th.today {
-  background: #FFD700 !important;
-  color: #000 !important;
-  font-weight: 700 !important;
-  z-index: 100 !important;
+/* Top-Left Corner Cell (The word "HABIT") */
+.habit-table thead th:first-child {
+  z-index: 30; /* Highest priority for corner cell */
+  background: linear-gradient(135deg, var(--accent-blue), #2563eb) !important;
 }
 
 .habit-table th {
   background: linear-gradient(135deg, var(--accent-blue), #2563eb);
   color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  padding: 1rem 0.75rem;
   position: sticky;
   top: 0;
   z-index: 10;
+  text-transform: uppercase;
+  font-size: 0.9rem;
 }
 
-.habit-cell {
-  cursor: pointer;
+.habit-table td {
+  padding: 1rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
   text-align: center;
-  padding: 0.75rem 0.5rem;
-  min-height: 40px;
-  line-height: 40px;
 }
 
-.habit-success { color: #10b981; font-size: 1.8em; font-weight: bold; }
-.habit-fail { color: #ef4444; font-size: 1.8em; font-weight: bold; }
-.habit-empty { color: #94a3b8; font-size: 1.6em; }
-
-.habit-table tbody td { cursor: pointer; }
-.habit-table tr:hover { background: rgba(59, 130, 246, 0.05); }
-body.dark-mode .habit-table tr:hover { background: rgba(59, 130, 246, 0.15); }
-
-/* Scrollbars */
-.table-container::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
+.habit-table th.today {
+  background: #FFD700 !important;
+  color: #000 !important;
+  z-index: 25; /* Higher than other headers */
 }
 
-.table-container::-webkit-scrollbar-track { background: var(--border-color); border-radius: 4px; }
-.table-container::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 4px; }
-.table-container::-webkit-scrollbar-thumb:hover { background: #2563eb; }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .charts-container { flex-direction: column; gap: 15px; padding: 15px; margin: 20px auto; }
-  body { padding: 1rem 0.5rem; }
-  .button-group { flex-direction: column; align-items: stretch; }
-}
-
-/* 🔥 40px CHECKBOX + MATCHING ICONS */
+/* CHECKBOX & ICON STYLING */
 .habit-cell {
     position: relative;
-    min-height: 65px !important;  /* Room for 40px checkbox */
-    padding: 0.75rem !important;
+    min-height: 65px;
+    padding: 0.75rem;
 }
 
 .habit-cell input[type="checkbox"] {
@@ -295,10 +249,9 @@ body.dark-mode .habit-table tr:hover { background: rgba(59, 130, 246, 0.15); }
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 40px !important;     /* Bigger checkbox */
-    height: 40px !important;    /* Bigger checkbox */
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    margin: 0;
     z-index: 5;
 }
 
@@ -310,46 +263,18 @@ body.dark-mode .habit-table tr:hover { background: rgba(59, 130, 246, 0.15); }
     pointer-events: none;
     z-index: 15;
     font-weight: 900;
-    line-height: 1;
 }
 
-/* ✅ Success - Matches 40px checkbox */
-.habit-cell.habit-success::before {
-    content: '✅';
-    font-size: 38px !important;  /* Perfect for 40px */
-    color: var(--accent-green) !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
+.habit-cell.habit-success::before { content: '✅'; font-size: 38px; }
+.habit-cell.habit-fail::before { content: '❌'; font-size: 36px; }
+.habit-cell.habit-empty::before { content: '○'; font-size: 24px; color: var(--text-secondary); }
 
-.habit-cell.habit-success input[type="checkbox"] {
-    accent-color: var(--accent-green);
-    border: 3px solid var(--accent-green);
-}
+/* Scrollbars */
+.table-container::-webkit-scrollbar { height: 10px; width: 8px; }
+.table-container::-webkit-scrollbar-track { background: var(--border-color); }
+.table-container::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 4px; }
 
-/* ❌ Fail - Matches 40px checkbox */
-.habit-cell.habit-fail::before {
-    content: '❌';
-    font-size: 36px !important;  /* Perfect for 40px */
-    color: var(--accent-red) !important;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.15);
-}
-
-.habit-cell.habit-fail input[type="checkbox"] {
-    accent-color: var(--accent-red);
-    border: 3px solid var(--accent-red);
-    background: rgba(254, 226, 226, 0.6);
-    opacity: 0.5;
-}
-
-/* ○ Empty - Matches 40px checkbox */
-.habit-cell.habit-empty::before {
-    content: '○';
-    font-size: 24px !important;  /* Perfect for 40px */
-    color: var(--text-secondary);
-}
-
-/* Hover - Scales both */
-.habit-cell:hover::before,
-.habit-cell:hover input[type="checkbox"] {
-    transform: translate(-50%, -50%) scale(1.08);
+@media (max-width: 768px) {
+  .charts-container { flex-direction: column; }
+  .button-group { flex-direction: column; }
 }
