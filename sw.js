@@ -1,5 +1,5 @@
 // 1. Change this version every time you deploy breaking/visible changes
-const CACHE_NAME = 'momentum-v4';
+const CACHE_NAME = 'momentum-v5';
 
 // 2. (Optional but recommended) – list of core assets to pre-cache
 const PRECACHE_ASSETS = [
@@ -92,3 +92,4 @@ self.addEventListener('sync', (event) => {
     );
   }
 });
+
