@@ -347,3 +347,44 @@ function resetMonthlyData() {
         createMonthlyHabitTracker();
     }
 }
+
+const CACHE_NAME = 'my-site-cache-v2'; // Change this v2, v3, etc. every time you update
+
+self.addEventListener('install', (event) => {
+  self.skipWaiting(); // Forces the new SW to take over immediately
+});
+
+self.addEventListener('activate', (event) => {
+  // Clean up old caches
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
+          }
+        })
+      );
+    })
+  );
+  return self.clients.claim(); // Immediately start controlling all open tabs
+});
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(reg => {
+    
+    // Check for updates
+    reg.onupdatefound = () => {
+      const installingWorker = reg.installing;
+      installingWorker.onstatechange = () => {
+        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // New content is available! 
+          // We force a reload so the user sees the new feature immediately.
+          window.location.reload(); 
+        }
+      };
+    };
+    
+  });
+}
+
