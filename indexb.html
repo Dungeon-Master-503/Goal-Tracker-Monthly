@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+
+  <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3DWWNN52ER"></script>
   <script>
@@ -19,54 +20,119 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="trp.css"?v=2>
 </head>
+
 <body>
-  <!-- Theme Toggle -->
-  <div class="theme-control">
-    <button id="trp3" class="theme-toggle" aria-label="Toggle dark mode">🌙 Night Mode</button>
-  </div>
+  <div class="container">
+    <div class="tracker-header">
+      <h1 class="page-title">Track your Habits</h1>
+      
+      <div class="points-section">
+        <div class="point-card today">
+          <div class="point-label">
+            <span>Today's Points</span>
+          </div>
+          <div class="point-value" id="todayPoints">0 pts</div>
+        </div>
+        
+        <div class="point-card monthly">
+          <div class="point-label">
+            <span>Monthly Score</span>
+          </div>
+          <div class="point-value" id="monthlyPoints">0 pts</div>
+        </div>
+      </div>
+    </div>
 
-  <!-- Header -->
-  <header class="tracker-header">
-    <h1 id="trp2" class="page-title">Track your Habits</h1>
-  </header>
+    <div class="action-bar">
+      <div class="button-group">
+        <button class="action-btn btn-info" id="infoBtn">Points Info</button>
+        <button class="action-btn btn-leaderboard" id="leaderboardBtn">Leaderboard</button>
+        <button class="action-btn btn-report" id="reportBtn">Monthly Report</button>
+        <button class="action-btn btn-theme" id="themeBtn">Dark Mode</button>
+        <button class="action-btn btn-add" id="addBtn">Add Habit</button>
+        <button class="action-btn btn-delete" id="deleteBtn">Delete Habit</button>
+        <button class="action-btn btn-reset" id="resetBtn">Reset Month</button>
+      </div>
+    </div>
 
-  <!-- Action Buttons -->
-  <div class="action-bar">
-    <div class="button-group">
-      <button id="edit-btn" class="action-btn edit-btn" aria-label="Edit habit goals">✏️ Edit Goals</button>
-      <button id="add-habit-btn" class="action-btn add-btn" aria-label="Add new habit">➕ Add Habit</button>
-      <button id="reset-btn" class="action-btn reset-btn" aria-label="Reset monthly data">🔄 Reset</button>
-      <button id="delete-habit-btn" class="action-btn" style="background: linear-gradient(135deg, var(--accent-orange), #d97706);">🗑️ Delete Goal</button>
+    <div class="charts-container">
+      <div class="chart-wrapper">
+        <h3>Goal Completion</h3>
+        <canvas id="pieChart" width="400" height="400"></canvas>
+      </div>
+      <div class="chart-wrapper">
+        <h3>Daily Progress</h3>
+        <canvas id="barChart" width="400" height="400"></canvas>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table class="habit-table">
+        <thead><tr></tr></thead>
+        <tbody></tbody>
+      </table>
     </div>
   </div>
 
-  <!-- 🔥 CHARTS CONTAINER - FIXED -->
-  <div class="charts-container">
-    <div class="chart-wrapper">
-      <h3>🥧 Goal Completion</h3>
-      <canvas id="pieChart" width="400" height="400"></canvas>
-    </div>
-    <div class="chart-wrapper">
-      <h3>📊 Daily Progress</h3>
-      <canvas id="barChart" width="400" height="400"></canvas>
+  <div class="modal" id="infoModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Points System</h3>
+        <button class="close-btn" id="infoClose">X</button>
+      </div>
+      
+      <div class="info-card yellow">
+        <div class="info-card-header">
+          <span>60% Completion</span>
+        </div>
+        <p>Earn <strong>5 points</strong> per day</p>
+      </div>
+
+      <div class="info-card orange">
+        <div class="info-card-header">
+          <span>80% Completion</span>
+        </div>
+        <p>Earn <strong>10 points</strong> per day</p>
+      </div>
+
+      <div class="info-card green">
+        <div class="info-card-header">
+          <span>100% Completion</span>
+        </div>
+        <p>Earn <strong>15 points</strong> per day</p>
+      </div>
+
+      <div class="info-note">
+        <strong>Monthly Score:</strong> Sum of all daily points earned throughout the month. Compete with others on the global leaderboard!
+      </div>
     </div>
   </div>
 
-  <!-- Habit Tracker Table -->
-  <div class="table-container">
-    <table class="habit-table">
-      <thead><tr></tr></thead>
-      <tbody></tbody>
-    </table>
+  <div class="modal" id="leaderboardModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Global Leaderboard</h3>
+        <button class="close-btn" id="leaderboardClose">X</button>
+      </div>
+      
+      <div id="leaderboardContent"></div>
+    </div>
   </div>
 
+  <div class="modal" id="reportModal">
+    <div class="modal-content modal-report">
+      <div class="modal-header">
+        <h3 class="modal-title">Monthly Report</h3>
+        <button class="close-btn" id="reportClose">X</button>
+      </div>
+      
+      <div id="reportContent"></div>
+      
+      <div class="report-actions">
+        <button class="action-btn btn-download" id="downloadReportBtn">Download Report</button>
+      </div>
+    </div>
+  </div>
 <script src="tracker-v2.js?v=1.1"></script>  <!-- Bump v= number on each JS update -->
-
 </body>
 </html>
-
-
-
-
-
-
