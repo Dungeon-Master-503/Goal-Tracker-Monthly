@@ -198,9 +198,9 @@ function calculatePoints() {
     var percentage = habits.length > 0 ? (completed / habits.length) * 100 : 0;
     var dayPoints = 0;
     
-    if (percentage === 100) dayPoints = 15;
+    if (percentage === 100) dayPoints = 20;
     else if (percentage >= 80) dayPoints = 10;
-    else if (percentage >= 60) dayPoints = 5;
+    else if (percentage >= 50) dayPoints = 5;
     
     monthlyPoints += dayPoints;
     if (day === today) dailyPoints = dayPoints;
@@ -717,3 +717,4 @@ function createProgressCharts() {
     });
   }
 }
+
